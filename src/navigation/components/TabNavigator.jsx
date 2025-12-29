@@ -15,7 +15,7 @@ import {
 import CustomTabBar from './CustomTabBar';
 import Home from '../../pages/Home';
 import Statistics from '../../pages/Statistics';
-import Profile from '../../pages/Profile';
+import ProfileDrawerNavigator from './ProfileDrawerNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,8 +46,8 @@ const TabNavigator = () => {
         }} 
       />
       <Tab.Screen 
-        name="Profile" 
-        component={Profile} 
+        name="ProfileTab" 
+        component={ProfileDrawerNavigator} 
         options={{ 
           title: 'Profile',
           tabBarIcon: (props) => <UserCircleIcon {...props} />,

@@ -9,6 +9,7 @@ import {
   SafeAreaView
 } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
 import { 
   Cog6ToothIcon,
   PencilSquareIcon,
@@ -18,7 +19,8 @@ import {
 const { width, height } = Dimensions.get('window');
 
 const Profile = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const navigation = useNavigation();
 
   const stats = [
     { label: 'Total Completed Habit', value: '0' },
@@ -36,7 +38,7 @@ const Profile = () => {
         <View className="flex-row justify-between items-center px-6 pt-4 mb-4">
           <Text className="text-2xl font-black text-slate-900">Profile</Text>
           <TouchableOpacity 
-            onPress={logout}
+            onPress={() => navigation.openDrawer()}
             className="p-2 rounded-xl bg-white shadow-sm border border-slate-100"
           >
             <Cog6ToothIcon size={22} color="#1e293b" />
