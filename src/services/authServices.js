@@ -92,3 +92,32 @@ export const isAuthenticated = async () => {
     return false;
   }
 };
+
+/**
+ * Change user password
+ * @param {string} userId - User ID
+ * @param {string} oldPassword - Current password
+ * @param {string} newPassword - New password
+ * @returns {Promise<boolean>} Success status
+ */
+export const changePassword = async (userId, oldPassword, newPassword) => {
+  try {
+    // 1. Verify old password
+    const result = await db.select().from(users).where(eq(users.id, userId));
+    const user = result[0];
+
+    if (!user || user.password !== oldPassword) {
+      throw new Error('Incorrect old password');
+    }
+
+    // 2. Update to new password (should be hashed in production)
+    await db.update(users)
+      .set({ password: newPassword })
+      .where(eq(users.id, userId));
+
+    return true;
+  } catch (error) {
+    console.error('Change password error:', error);
+    throw error;
+  }
+};
