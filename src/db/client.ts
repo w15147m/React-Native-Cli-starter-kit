@@ -4,8 +4,9 @@ import * as schema from "./schema";
 import migrations from "../../drizzle/migrations";
 
 // Open the database
+// Open the database
 const sqlite = SQLite.openDatabase({
-  name: "MyData_v4.db",
+  name: "MyData_v5.db", // Fresh start with cleaned migrations
   location: "default",
 });
 
@@ -17,12 +18,11 @@ const getColumnNames = (sql: string): string[] | null => {
     const columnPart = selectMatch[1];
     return columnPart.split(',').map(col => {
       const parts = col.trim().split(/\s+as\s+/i);
-      const target = parts[parts.length - 1]; // Get the alias if exists, else the column
+      const target = parts[parts.length - 1];
       return target.replace(/"/g, '').replace(/`/g, '').split('.').pop() || '';
     });
   }
 
-  // Handle RETURNING clauses (for INSERT/UPDATE)
   const returningMatch = sql.match(/returning\s+(.*)$/i);
   if (returningMatch) {
     return returningMatch[1].split(',').map(col =>
@@ -54,19 +54,13 @@ const callback = async (sql: string, params: any[], method: "all" | "run" | "get
     const columnNames = getColumnNames(sql);
 
     if (columnNames && columnNames.length > 0) {
-      // Map objects to arrays based on the parsed column order
       const data = results.map(row => columnNames.map(col => row[col]));
-      if (method === "get") {
-        return { rows: data[0] || [] };
-      }
+      if (method === "get") return { rows: data[0] || [] };
       return { rows: data };
     }
 
-    // Default for metadata queries or queries where column extraction fails
     const defaultData = results.map(row => Object.values(row));
-    if (method === "get") {
-      return { rows: defaultData[0] || [] };
-    }
+    if (method === "get") return { rows: defaultData[0] || [] };
     return { rows: defaultData };
   } catch (e) {
     console.error("Drizzle Proxy Error:", e);
@@ -83,7 +77,7 @@ export const runMigrations = async () => {
     const execute = (sql: string, params: any[] = []) => new Promise((resolve, reject) => {
       sqlite.transaction((tx) => {
         tx.executeSql(sql, params, (_, res) => resolve(res), (_, err) => {
-          reject(err);
+          reject(err || new Error("Unknown SQL error"));
           return false;
         });
       });
@@ -98,10 +92,6 @@ export const runMigrations = async () => {
         created_at INTEGER NOT NULL
       );
     `);
-
-    try {
-      await execute(`ALTER TABLE __drizzle_migrations ADD COLUMN name TEXT UNIQUE`);
-    } catch (e) { }
 
     if (!migrations || !migrations.migrations) {
       throw new Error("Migrations not properly loaded");
@@ -118,13 +108,14 @@ export const runMigrations = async () => {
       if (res.rows.length > 0) continue;
 
       const sql = (migrations.migrations as any)[key];
+      if (!sql) throw new Error(`Migration SQL for ${key} is missing`);
+
       const statements = sql.split('--> statement-breakpoint');
 
       for (const statement of statements) {
         const trimmed = statement.trim();
         if (trimmed) {
-          const finalSql = trimmed.replace(/CREATE TABLE (`?\w+`?)/i, 'CREATE TABLE IF NOT EXISTS $1');
-          await execute(finalSql);
+          await execute(trimmed);
         }
       }
 
@@ -134,7 +125,7 @@ export const runMigrations = async () => {
       );
     }
   } catch (error) {
-    console.error("Migration error:", error);
+    console.error("Migration fatal error:", error);
     throw error;
   }
 };

@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1766942170421,
-      "tag": "0000_rich_mac_gargan",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1766993682583,
-      "tag": "0001_polite_odin",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1766996741375,
-      "tag": "0002_nifty_karma",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1766997081201,
-      "tag": "0003_omniscient_talon",
+      "when": 1767003040326,
+      "tag": "0000_powerful_red_skull",
       "breakpoints": true
     }
   ]
