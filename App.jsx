@@ -9,11 +9,9 @@ function App() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        console.log('Running database migrations...');
         await runMigrations();
-        console.log('Migrations completed successfully');
       } catch (error) {
-        console.error('Migration error:', error);
+        // Silent error for UI, or handle as needed
       } finally {
         SplashScreen.hide();
       }

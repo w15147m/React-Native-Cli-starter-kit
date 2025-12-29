@@ -80,10 +80,6 @@ export const db = drizzle(callback, { schema });
 // Migration runner
 export const runMigrations = async () => {
   try {
-    console.log("Starting migrations...");
-    console.log("Migrations object:", migrations);
-    console.log("Migrations.migrations:", migrations.migrations);
-
     const execute = (sql: string, params: any[] = []) => new Promise((resolve, reject) => {
       sqlite.transaction((tx) => {
         tx.executeSql(sql, params, (_, res) => resolve(res), (_, err) => {
@@ -108,12 +104,10 @@ export const runMigrations = async () => {
     } catch (e) { }
 
     if (!migrations || !migrations.migrations) {
-      console.error("Migrations object is invalid:", migrations);
       throw new Error("Migrations not properly loaded");
     }
 
     const migrationKeys = Object.keys(migrations.migrations).sort();
-    console.log("Migration keys:", migrationKeys);
 
     for (const key of migrationKeys) {
       const res: any = await execute(
@@ -123,7 +117,6 @@ export const runMigrations = async () => {
 
       if (res.rows.length > 0) continue;
 
-      console.log(`Applying migration: ${key}`);
       const sql = (migrations.migrations as any)[key];
       const statements = sql.split('--> statement-breakpoint');
 
@@ -140,10 +133,8 @@ export const runMigrations = async () => {
         [key, key, Date.now()]
       );
     }
-
-    console.log("Migrations completed successfully");
   } catch (error) {
-    console.error("Migration error details:", error);
+    console.error("Migration error:", error);
     throw error;
   }
 };

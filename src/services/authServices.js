@@ -12,30 +12,18 @@ import { getItem } from '../utils/storage';
  */
 export const login = async (email, password) => {
   try {
-    console.log('Login attempt:', { email, password });
-    
     // Query user by email
     const result = await db.select().from(users).where(eq(users.email, email));
-    console.log('Query result:', result);
     
     const user = result[0];
 
-    if (!user) {
-      console.log('No user found with email:', email);
-      throw new Error('Invalid email or password');
-    }
-
-    console.log('User found:', { id: user.id, email: user.email, storedPassword: user.password });
-
-    if (user.password !== password) {
-      console.log('Password mismatch. Expected:', user.password, 'Got:', password);
+    if (!user || user.password !== password) {
       throw new Error('Invalid email or password');
     }
 
     // Generate a simple token (in production, use JWT)
     const token = `token_${user.id}_${Date.now()}`;
 
-    console.log('Login successful!');
     return {
       user: {
         id: user.id,
@@ -45,7 +33,6 @@ export const login = async (email, password) => {
       token,
     };
   } catch (error) {
-    console.error('Login error:', error);
     Alert.alert('Login Failed', error.message);
     throw error;
   }
