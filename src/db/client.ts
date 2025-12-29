@@ -5,9 +5,33 @@ import migrations from "../../drizzle/migrations";
 
 // Open the database
 const sqlite = SQLite.openDatabase({
-  name: "MyData.db",
+  name: "MyData_v4.db",
   location: "default",
 });
+
+// Helper to extract column names from SQL queries
+const getColumnNames = (sql: string): string[] | null => {
+  // Handle SELECT queries
+  const selectMatch = sql.match(/select\s+(.*?)\s+from/i);
+  if (selectMatch) {
+    const columnPart = selectMatch[1];
+    return columnPart.split(',').map(col => {
+      const parts = col.trim().split(/\s+as\s+/i);
+      const target = parts[parts.length - 1]; // Get the alias if exists, else the column
+      return target.replace(/"/g, '').replace(/`/g, '').split('.').pop() || '';
+    });
+  }
+
+  // Handle RETURNING clauses (for INSERT/UPDATE)
+  const returningMatch = sql.match(/returning\s+(.*)$/i);
+  if (returningMatch) {
+    return returningMatch[1].split(',').map(col =>
+      col.trim().replace(/"/g, '').replace(/`/g, '').split('.').pop() || ''
+    );
+  }
+
+  return null;
+};
 
 // Create a callback function for the proxy driver
 const callback = async (sql: string, params: any[], method: "all" | "run" | "get" | "values") => {
@@ -27,8 +51,23 @@ const callback = async (sql: string, params: any[], method: "all" | "run" | "get
       });
     });
 
-    // Drizzle expects {rows: [...]} format
-    return { rows: results };
+    const columnNames = getColumnNames(sql);
+
+    if (columnNames && columnNames.length > 0) {
+      // Map objects to arrays based on the parsed column order
+      const data = results.map(row => columnNames.map(col => row[col]));
+      if (method === "get") {
+        return { rows: data[0] || [] };
+      }
+      return { rows: data };
+    }
+
+    // Default for metadata queries or queries where column extraction fails
+    const defaultData = results.map(row => Object.values(row));
+    if (method === "get") {
+      return { rows: defaultData[0] || [] };
+    }
+    return { rows: defaultData };
   } catch (e) {
     console.error("Drizzle Proxy Error:", e);
     throw e;
@@ -85,7 +124,7 @@ export const runMigrations = async () => {
       if (res.rows.length > 0) continue;
 
       console.log(`Applying migration: ${key}`);
-      const sql = migrations.migrations[key];
+      const sql = (migrations.migrations as any)[key];
       const statements = sql.split('--> statement-breakpoint');
 
       for (const statement of statements) {

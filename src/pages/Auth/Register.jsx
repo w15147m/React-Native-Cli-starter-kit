@@ -17,6 +17,8 @@ import { register as registerService } from '../../services/authServices';
 const Register = ({ navigation }) => {
   const { login } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const {
     control,
@@ -153,30 +155,38 @@ const Register = ({ navigation }) => {
             {/* Password Field */}
             <View>
               <Text className="text-slate-300 mb-2 font-medium">Password</Text>
-              <Controller
-                control={control}
-                name="password"
-                rules={{
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
-                  },
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    className={`bg-slate-800 text-white p-4 rounded-xl border ${
-                      errors.password ? 'border-red-500' : 'border-slate-700'
-                    }`}
-                    placeholder="Create a password"
-                    placeholderTextColor="#94a3b8"
-                    secureTextEntry
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
+              <View className="relative">
+                <Controller
+                  control={control}
+                  name="password"
+                  rules={{
+                    required: 'Password is required',
+                    minLength: {
+                      value: 6,
+                      message: 'Password must be at least 6 characters',
+                    },
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      className={`bg-slate-800 text-white p-4 pr-12 rounded-xl border ${
+                        errors.password ? 'border-red-500' : 'border-slate-700'
+                      }`}
+                      placeholder="Create a password"
+                      placeholderTextColor="#94a3b8"
+                      secureTextEntry={!showPassword}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-4"
+                >
+                  <Text className="text-2xl">{showPassword ? '👁️' : '👁️‍🗨️'}</Text>
+                </TouchableOpacity>
+              </View>
               {errors.password && (
                 <Text className="text-red-500 text-sm mt-1">
                   {errors.password.message}
@@ -189,28 +199,36 @@ const Register = ({ navigation }) => {
               <Text className="text-slate-300 mb-2 font-medium">
                 Confirm Password
               </Text>
-              <Controller
-                control={control}
-                name="confirmPassword"
-                rules={{
-                  required: 'Please confirm your password',
-                  validate: (value) =>
-                    value === password || 'Passwords do not match',
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    className={`bg-slate-800 text-white p-4 rounded-xl border ${
-                      errors.confirmPassword ? 'border-red-500' : 'border-slate-700'
-                    }`}
-                    placeholder="Confirm your password"
-                    placeholderTextColor="#94a3b8"
-                    secureTextEntry
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
+              <View className="relative">
+                <Controller
+                  control={control}
+                  name="confirmPassword"
+                  rules={{
+                    required: 'Please confirm your password',
+                    validate: (value) =>
+                      value === password || 'Passwords do not match',
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      className={`bg-slate-800 text-white p-4 pr-12 rounded-xl border ${
+                        errors.confirmPassword ? 'border-red-500' : 'border-slate-700'
+                      }`}
+                      placeholder="Confirm your password"
+                      placeholderTextColor="#94a3b8"
+                      secureTextEntry={!showConfirmPassword}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-4"
+                >
+                  <Text className="text-2xl">{showConfirmPassword ? '👁️' : '👁️‍🗨️'}</Text>
+                </TouchableOpacity>
+              </View>
               {errors.confirmPassword && (
                 <Text className="text-red-500 text-sm mt-1">
                   {errors.confirmPassword.message}

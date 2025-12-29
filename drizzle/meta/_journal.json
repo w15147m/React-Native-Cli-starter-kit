@@ -15,6 +15,20 @@
       "when": 1766993682583,
       "tag": "0001_polite_odin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1766996741375,
+      "tag": "0002_nifty_karma",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1766997081201,
+      "tag": "0003_omniscient_talon",
+      "breakpoints": true
     }
   ]
 }

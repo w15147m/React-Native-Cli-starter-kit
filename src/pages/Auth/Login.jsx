@@ -17,6 +17,7 @@ import { login as loginService } from '../../services/authServices';
 const Login = ({ navigation }) => {
   const { login } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   
   const {
     control,
@@ -107,30 +108,38 @@ const Login = ({ navigation }) => {
             {/* Password Field */}
             <View>
               <Text className="text-slate-300 mb-2 font-medium">Password</Text>
-              <Controller
-                control={control}
-                name="password"
-                rules={{
-                  required: 'Password is required',
-                  minLength: {
-                    value: 3,
-                    message: 'Password must be at least 3 characters',
-                  },
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    className={`bg-slate-800 text-white p-4 rounded-xl border ${
-                      errors.password ? 'border-red-500' : 'border-slate-700'
-                    }`}
-                    placeholder="Enter your password"
-                    placeholderTextColor="#94a3b8"
-                    secureTextEntry
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
+              <View className="relative">
+                <Controller
+                  control={control}
+                  name="password"
+                  rules={{
+                    required: 'Password is required',
+                    minLength: {
+                      value: 3,
+                      message: 'Password must be at least 3 characters',
+                    },
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      className={`bg-slate-800 text-white p-4 pr-12 rounded-xl border ${
+                        errors.password ? 'border-red-500' : 'border-slate-700'
+                      }`}
+                      placeholder="Enter your password"
+                      placeholderTextColor="#94a3b8"
+                      secureTextEntry={!showPassword}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-4"
+                >
+                  <Text className="text-2xl">{showPassword ? '👁️' : '👁️‍🗨️'}</Text>
+                </TouchableOpacity>
+              </View>
               {errors.password && (
                 <Text className="text-red-500 text-sm mt-1">
                   {errors.password.message}

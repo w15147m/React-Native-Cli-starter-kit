@@ -26,12 +26,7 @@ export const get = async (table) => {
   }
 };
 
-/**
- * Get a single record by ID
- * @param {Object} table - Drizzle table schema
- * @param {number} id - Record ID
- * @returns {Promise<Object>} Single record
- */
+
 export const getById = async (table, id) => {
   try {
     const result = await db.select().from(table).where(eq(table.id, id));
