@@ -39,7 +39,7 @@ const SplashScreen = ({ onFinish }) => {
       >
         <Text
           style={{ fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif' }}
-          className="text-7xl font-black text-white"
+          className="text-7xl font-black text-white tracking-tighter"
         >
           Ascend
         </Text>
