@@ -80,11 +80,11 @@ const Login = ({ navigation }) => {
             )}
           />
         </View>
-          {errors.email && (
-            <Text className="text-red-500 text-sm mt-1 ml-2">
-              {errors.email.message}
-            </Text>
-          )}
+        {errors.email && (
+          <Text className="text-red-500 text-sm mt-1 ml-2">
+            {errors.email.message}
+          </Text>
+        )}
 
         {/* Password Field */}
         <View>

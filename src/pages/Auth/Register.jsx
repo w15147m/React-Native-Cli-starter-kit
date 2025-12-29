@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
-  Platform,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { AuthContext } from '../../context/AuthContext';

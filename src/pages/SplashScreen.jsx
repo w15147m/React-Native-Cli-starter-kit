@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Animated, StatusBar } from 'react-native';
+import { View, Text, Animated, StatusBar, Platform } from 'react-native';
 
 const SplashScreen = ({ onFinish }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -19,9 +19,8 @@ const SplashScreen = ({ onFinish }) => {
       }),
     ]).start();
 
-    // Finish splash after 2.5 seconds
     const timer = setTimeout(() => {
-      onFinish();
+      if (onFinish) onFinish();
     }, 2500);
 
     return () => clearTimeout(timer);
