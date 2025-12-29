@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { AuthProvider } from './src/context/AuthContext';
+import { AlertProvider } from './src/context/AlertContext';
+import AlertModal from './src/components/AlertModal';
 import AppNavigator from './src/navigation/AppNavigator';
 import SplashScreen from 'react-native-splash-screen';
 import { runMigrations } from './src/db/client';
@@ -22,8 +24,11 @@ function App() {
 
   return (
     <AuthProvider>
-      <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
-      <AppNavigator />
+      <AlertProvider>
+        <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
+        <AppNavigator />
+        <AlertModal />
+      </AlertProvider>
     </AuthProvider>
   );
 }

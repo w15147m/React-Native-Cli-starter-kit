@@ -1,15 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { AuthContext } from '../../context/AuthContext';
-import { login as loginService } from '../../services/authServices';
+import { useAlert } from '../../context/AlertContext';
 import AuthLayout from '../../components/AuthLayout';
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline';
 import { EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/solid';
