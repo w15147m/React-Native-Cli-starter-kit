@@ -5,7 +5,7 @@ const STORAGE_KEYS = {
   USER_DATA: 'user_data',
 };
 
-export const saveItem = async (key, value) => {
+export const setItem = async (key, value) => {
   try {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem(key, jsonValue);
@@ -33,7 +33,7 @@ export const removeItem = async (key) => {
 
 export default {
   STORAGE_KEYS,
-  saveItem,
+  setItem,
   getItem,
   removeItem,
 };

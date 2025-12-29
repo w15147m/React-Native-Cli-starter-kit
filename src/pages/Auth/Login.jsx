@@ -49,7 +49,6 @@ const Login = ({ navigation }) => {
       subtitle="Continue your habit journey and unlock new badges."
     >
       <View className="space-y-4">
-        {/* Email Field */}
         <View className="relative">
           <View className="absolute left-4 top-4 z-10">
             <EnvelopeIcon size={24} color="#94a3b8" />

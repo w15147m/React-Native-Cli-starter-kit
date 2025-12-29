@@ -59,7 +59,7 @@ const Register = ({ navigation }) => {
   return (
     <AuthLayout 
       title="Get Started" 
-      subtitle="Build your habits, unlock your potential and level up with badges along the way."
+      subtitle="Build your habits Unlock  potential."
     >
       <View className="space-y-4">
         {/* Name Field */}

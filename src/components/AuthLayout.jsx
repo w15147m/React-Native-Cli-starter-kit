@@ -107,9 +107,9 @@ const AuthLayout = ({ children, title, subtitle }) => {
             {children}
 
             {/* Footer Branding */}
-            <View className="mt-auto pt-8 items-center">
-              <Text className="text-slate-400 text-xs text-center leading-5 px-4">
-                By continuing, you agree to Ascend's {' '}
+            <View className="mt-auto items-center">
+              <Text className="text-slate-400 text-xs text-center ">
+                {/* By continuing, you agree to Ascend's {' '} */}
                 <Text className="text-slate-900 font-bold">Terms of Use</Text> and {' '}
                 <Text className="text-slate-900 font-bold">Privacy Policy</Text>
               </Text>
