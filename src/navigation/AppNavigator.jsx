@@ -52,7 +52,7 @@ const AppNavigator = () => {
               component={Home}
               options={{
                 title: 'Home',
-                headerShown: true,
+                headerShown: false,
               }}
             />
           </>

@@ -5,16 +5,17 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { AuthContext } from '../../context/AuthContext';
+import { useAlert } from '../../context/AlertContext';
 import { register as registerService } from '../../services/authServices';
 import AuthLayout from '../../components/AuthLayout';
 import { EyeIcon, EyeSlashIcon, UserIcon, EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/outline';
 
 const Register = ({ navigation }) => {
   const { login } = useContext(AuthContext);
+  const { showAlert } = useAlert();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -43,14 +44,14 @@ const Register = ({ navigation }) => {
         password: data.password,
       });
       
-      Alert.alert('Success', 'Registration successful! Please login.', [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate('Login'),
-        },
-      ]);
+      showAlert(
+        'Success', 
+        'Registration successful! Please login.', 
+        'success',
+        () => navigation.navigate('Login')
+      );
     } catch (error) {
-      // Error already handled by authServices
+      showAlert('Error', error.message || 'Registration failed', 'error');
     } finally {
       setLoading(false);
     }

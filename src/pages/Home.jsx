@@ -15,11 +15,10 @@ import {
   UserIcon,
   HomeIcon,
   ChartBarIcon,
-  UserCircleIcon
 } from 'react-native-heroicons/outline';
 import { UserCircleIcon as UserCircleIconSolid } from 'react-native-heroicons/solid';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const Home = () => {
   const { user, logout } = useContext(AuthContext);
@@ -37,43 +36,43 @@ const Home = () => {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         {/* Header */}
-        <View className="flex-row justify-between items-center px-6 pt-6 mb-8">
+        <View className="flex-row justify-between items-center px-6 pt-4 mb-4">
           <Text className="text-2xl font-black text-slate-900">Profile</Text>
           <TouchableOpacity 
             onPress={logout}
             className="p-2 rounded-xl bg-white shadow-sm border border-slate-100"
           >
-            <Cog6ToothIcon size={24} color="#1e293b" />
+            <Cog6ToothIcon size={22} color="#1e293b" />
           </TouchableOpacity>
         </View>
 
         {/* User Card */}
-        <View className="mx-6 bg-white rounded-[32px] p-5 flex-row items-center shadow-xl shadow-slate-200/50 border border-slate-50 mb-6">
-          <View className="w-16 h-16 bg-emerald-100 rounded-[22px] items-center justify-center">
-            <UserIcon size={32} color="#10b981" />
+        <View className="mx-6 bg-white rounded-[28px] p-4 flex-row items-center shadow-lg shadow-slate-200/50 border border-slate-50 mb-4">
+          <View className="w-14 h-14 bg-emerald-100 rounded-[20px] items-center justify-center">
+            <UserIcon size={28} color="#10b981" />
           </View>
           <View className="flex-1 ml-4">
-            <Text className="text-xl font-bold text-slate-900">
+            <Text className="text-lg font-bold text-slate-900">
               {user?.user?.name || 'User Name'}
             </Text>
-            <Text className="text-slate-400 font-medium">
+            <Text className="text-slate-400 text-sm font-medium">
               @{user?.user?.name?.toLowerCase().replace(/\s/g, '') || 'username'}
             </Text>
           </View>
           <TouchableOpacity className="p-2">
-            <PencilSquareIcon size={24} color="#6366f1" />
+            <PencilSquareIcon size={22} color="#6366f1" />
           </TouchableOpacity>
         </View>
 
         {/* Stats Grid */}
-        <View className="flex-row mx-6 mb-8">
+        <View className="flex-row mx-6 mb-6">
           {stats.map((stat, index) => (
             <View 
               key={index} 
-              className={`flex-1 bg-white rounded-[24px] p-5 shadow-lg shadow-slate-200/40 border border-slate-50 ${index === 0 ? 'mr-3' : 'ml-3'}`}
+              className={`flex-1 bg-white rounded-[22px] p-4 shadow-md shadow-slate-200/40 border border-slate-50 ${index === 0 ? 'mr-3' : 'ml-3'}`}
             >
-              <Text className="text-2xl font-black text-slate-900 mb-1">{stat.value}</Text>
-              <Text className="text-slate-400 text-xs font-bold leading-4 pr-2">
+              <Text className="text-xl font-black text-slate-900 mb-0.5">{stat.value}</Text>
+              <Text className="text-slate-400 text-[10px] font-bold leading-3 pr-2">
                 {stat.label}
               </Text>
             </View>
@@ -81,53 +80,57 @@ const Home = () => {
         </View>
 
         {/* Achievements Section */}
-        <View className="px-6 mb-4">
-          <Text className="text-xl font-bold text-slate-900 mb-6">Achievements</Text>
+        <View className="px-6 mb-2">
+          <Text className="text-lg font-bold text-slate-900 mb-4">Achievements</Text>
           
-          <View className="items-center py-8">
+          <View className="items-center py-4">
             <Image 
               source={require('../assets/3D-Icon/Bunny-small.png')}
-              style={{ width: 140, height: 140 }}
+              style={{ width: 110, height: 110 }}
               resizeMode="contain"
             />
-            <Text className="text-lg font-bold text-slate-900 mt-4 mb-2">
+            <Text className="text-base font-bold text-slate-900 mt-2 mb-1">
               Your journey starts here.
             </Text>
-            <Text className="text-slate-400 text-center px-10 leading-5 font-medium mb-8">
+            <Text className="text-slate-400 text-center px-10 text-xs leading-4 font-medium mb-6">
               Complete your daily habits to unlock badges and track your growth.
             </Text>
             
-            <TouchableOpacity className="bg-indigo-600 px-10 py-4 rounded-2xl shadow-xl shadow-indigo-200">
-              <Text className="text-white font-bold text-lg">Add Habit</Text>
+            <TouchableOpacity className="bg-indigo-600 px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-200">
+              <Text className="text-white font-bold text-base">Add Habit</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
 
-      {/* Persistent Bottom Nav (Mocked) */}
+      {/* Persistent Bottom Nav (Fixed to Bottom - Slimmer) */}
       <View 
-        className="absolute bottom-6 left-6 right-6 bg-white h-20 rounded-[30px] flex-row items-center px-4 shadow-2xl border border-slate-50"
+        className="absolute bottom-0 left-0 right-0 bg-white h-20 rounded-t-[32px] flex-row items-center px-8 shadow-2xl border-t border-slate-50"
         style={{ 
           shadowColor: '#000',
-          shadowOffset: { width: 0, height: 10 },
-          shadowOpacity: 0.1,
-          shadowRadius: 20,
-          elevation: 20
+          shadowOffset: { width: 0, height: -10 },
+          shadowOpacity: 0.05,
+          shadowRadius: 15,
+          elevation: 30,
+          paddingBottom: 10
         }}
       >
         <TouchableOpacity className="flex-1 items-center justify-center">
-          <HomeIcon size={26} color="#94a3b8" />
-          <Text className="text-[10px] text-slate-400 font-bold mt-1">Home</Text>
+          <HomeIcon size={24} color="#94a3b8" />
+          <Text className="text-[9px] text-slate-400 font-bold mt-1">Home</Text>
         </TouchableOpacity>
         
         <TouchableOpacity className="flex-1 items-center justify-center">
-          <ChartBarIcon size={26} color="#94a3b8" />
-          <Text className="text-[10px] text-slate-400 font-bold mt-1">Statistics</Text>
+          <ChartBarIcon size={24} color="#94a3b8" />
+          <Text className="text-[9px] text-slate-400 font-bold mt-1">Statistics</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity className="flex-1 items-center justify-center bg-indigo-50/50 rounded-2xl py-2">
-          <UserCircleIconSolid size={26} color="#6366f1" />
-          <Text className="text-[10px] text-indigo-600 font-bold mt-1">Profile</Text>
+        <TouchableOpacity 
+          className="flex-1 items-center justify-center bg-indigo-50/80 rounded-xl py-1.5 px-2"
+          style={{ maxWidth: 70 }}
+        >
+          <UserCircleIconSolid size={24} color="#6366f1" />
+          <Text className="text-[9px] text-indigo-600 font-bold mt-0.5">Profile</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

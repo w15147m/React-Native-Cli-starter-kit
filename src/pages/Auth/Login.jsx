@@ -1,11 +1,22 @@
 import React, { useContext, useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { AuthContext } from '../../context/AuthContext';
 import { useAlert } from '../../context/AlertContext';
+import { login as loginService } from '../../services/authServices';
 import AuthLayout from '../../components/AuthLayout';
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline';
 import { EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/solid';
 
 const Login = ({ navigation }) => {
   const { login } = useContext(AuthContext);
+  const { showAlert } = useAlert();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -25,9 +36,9 @@ const Login = ({ navigation }) => {
     try {
       const response = await loginService(data.email, data.password);
       await login(response);
-      Alert.alert('Success', 'Login successful!');
+      showAlert('Success', 'Login successful!', 'success');
     } catch (error) {
-      // Error already handled by authServices
+      showAlert('Error', error.message || 'Login failed', 'error');
     } finally {
       setLoading(false);
     }
