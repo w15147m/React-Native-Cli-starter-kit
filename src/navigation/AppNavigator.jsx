@@ -10,11 +10,17 @@ import Register from '../pages/Auth/Register';
 
 // Main Screens
 import Home from '../pages/Home';
+import SplashScreen from '../pages/SplashScreen';
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   const { user, loading } = useContext(AuthContext);
+  const [showSplash, setShowSplash] = React.useState(true);
+
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
 
   // Show loading spinner while checking auth state
   if (loading) {
