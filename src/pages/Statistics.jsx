@@ -1,0 +1,67 @@
+import React from 'react';
+import { 
+  View, 
+  Text, 
+  SafeAreaView, 
+  ScrollView, 
+  TouchableOpacity,
+  Dimensions
+} from 'react-native';
+import { 
+  ChartBarSquareIcon,
+  ArrowUpIcon,
+  ArrowDownIcon
+} from 'react-native-heroicons/outline';
+
+const { width } = Dimensions.get('window');
+
+const Statistics = () => {
+  return (
+    <SafeAreaView className="flex-1 bg-[#F8FAFC]">
+      <ScrollView 
+        className="flex-1" 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        {/* Header */}
+        <View className="px-6 pt-4 mb-8">
+          <Text className="text-2xl font-black text-slate-900">Statistics</Text>
+          <Text className="text-slate-400 font-medium text-sm mt-1">Track your consistency</Text>
+        </View>
+
+        {/* Dummy Chart Placeholder */}
+        <View className="mx-6 bg-white rounded-[32px] p-6 mb-8 border border-slate-50 shadow-sm items-center justify-center h-64">
+          <ChartBarSquareIcon size={48} color="#e2e8f0" />
+          <Text className="text-slate-300 font-bold mt-4">Growth Chart Placeholder</Text>
+        </View>
+
+        {/* Info Rows */}
+        <View className="px-6 space-y-4">
+          <View className="bg-white p-5 rounded-[24px] flex-row items-center border border-slate-50 shadow-sm">
+            <View className="w-10 h-10 bg-emerald-100 rounded-full items-center justify-center">
+              <ArrowUpIcon size={20} color="#10b981" />
+            </View>
+            <View className="ml-4 flex-1">
+              <Text className="text-slate-900 font-bold">Best Day</Text>
+              <Text className="text-slate-400 text-xs">Monday (All habits completed)</Text>
+            </View>
+            <Text className="text-slate-900 font-black text-xl">100%</Text>
+          </View>
+
+          <View className="bg-white p-5 rounded-[24px] flex-row items-center border border-slate-50 shadow-sm">
+            <View className="w-10 h-10 bg-rose-100 rounded-full items-center justify-center">
+              <ArrowDownIcon size={20} color="#ef4444" />
+            </View>
+            <View className="ml-4 flex-1">
+              <Text className="text-slate-900 font-bold">Weakest Day</Text>
+              <Text className="text-slate-400 text-xs">Friday (2 habits missed)</Text>
+            </View>
+            <Text className="text-slate-900 font-black text-xl">40%</Text>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default Statistics;

@@ -1,33 +1,22 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { 
   View, 
   Text, 
-  TouchableOpacity, 
+  SafeAreaView, 
   ScrollView, 
-  Dimensions, 
   Image,
-  SafeAreaView
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
-import { AuthContext } from '../context/AuthContext';
 import { 
-  Cog6ToothIcon,
-  PencilSquareIcon,
-  UserIcon,
-  HomeIcon,
-  ChartBarIcon,
+  BellIcon,
+  FireIcon,
+  SparklesIcon
 } from 'react-native-heroicons/outline';
-import { UserCircleIcon as UserCircleIconSolid } from 'react-native-heroicons/solid';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const Home = () => {
-  const { user, logout } = useContext(AuthContext);
-
-  const stats = [
-    { label: 'Total Completed Habit', value: '0' },
-    { label: 'Experience Points (XP)', value: '0' },
-  ];
-
   return (
     <SafeAreaView className="flex-1 bg-[#F8FAFC]">
       <ScrollView 
@@ -36,103 +25,49 @@ const Home = () => {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         {/* Header */}
-        <View className="flex-row justify-between items-center px-6 pt-4 mb-4">
-          <Text className="text-2xl font-black text-slate-900">Profile</Text>
-          <TouchableOpacity 
-            onPress={logout}
-            className="p-2 rounded-xl bg-white shadow-sm border border-slate-100"
-          >
-            <Cog6ToothIcon size={22} color="#1e293b" />
+        <View className="flex-row justify-between items-center px-6 pt-4 mb-6">
+          <View>
+            <Text className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-1">
+              Welcome Back
+            </Text>
+            <Text className="text-2xl font-black text-slate-900">Dashboard</Text>
+          </View>
+          <TouchableOpacity className="p-2 rounded-xl bg-white shadow-sm border border-slate-100">
+            <BellIcon size={24} color="#1e293b" />
           </TouchableOpacity>
         </View>
 
-        {/* User Card */}
-        <View className="mx-6 bg-white rounded-[28px] p-4 flex-row items-center shadow-lg shadow-slate-200/50 border border-slate-50 mb-4">
-          <View className="w-14 h-14 bg-emerald-100 rounded-[20px] items-center justify-center">
-            <UserIcon size={28} color="#10b981" />
-          </View>
-          <View className="flex-1 ml-4">
-            <Text className="text-lg font-bold text-slate-900">
-              {user?.user?.name || 'User Name'}
-            </Text>
-            <Text className="text-slate-400 text-sm font-medium">
-              @{user?.user?.name?.toLowerCase().replace(/\s/g, '') || 'username'}
-            </Text>
-          </View>
-          <TouchableOpacity className="p-2">
-            <PencilSquareIcon size={22} color="#6366f1" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Stats Grid */}
-        <View className="flex-row mx-6 mb-6">
-          {stats.map((stat, index) => (
-            <View 
-              key={index} 
-              className={`flex-1 bg-white rounded-[22px] p-4 shadow-md shadow-slate-200/40 border border-slate-50 ${index === 0 ? 'mr-3' : 'ml-3'}`}
-            >
-              <Text className="text-xl font-black text-slate-900 mb-0.5">{stat.value}</Text>
-              <Text className="text-slate-400 text-[10px] font-bold leading-3 pr-2">
-                {stat.label}
-              </Text>
+        {/* Hero Card */}
+        <View className="mx-6 bg-indigo-600 rounded-[32px] p-6 mb-8 overflow-hidden relative">
+          <View className="z-10">
+            <Text className="text-indigo-100 font-bold mb-2">Daily Progress</Text>
+            <Text className="text-3xl font-black text-white mb-4">Keep it up! 🚀</Text>
+            <View className="flex-row items-center bg-white/20 self-start px-4 py-2 rounded-full">
+              <FireIcon size={20} color="white" />
+              <Text className="text-white font-bold ml-2">5 Day Streak</Text>
             </View>
-          ))}
+          </View>
+          
+          {/* Abstract circles */}
+          <View className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full" />
+          <View className="absolute -bottom-20 -left-10 w-60 h-60 bg-white/5 rounded-full" />
         </View>
 
-        {/* Achievements Section */}
-        <View className="px-6 mb-2">
-          <Text className="text-lg font-bold text-slate-900 mb-4">Achievements</Text>
+        {/* Dummy Content */}
+        <View className="px-6">
+          <Text className="text-xl font-bold text-slate-900 mb-4">Your Habits</Text>
           
-          <View className="items-center py-4">
-            <Image 
-              source={require('../assets/3D-Icon/Bunny-small.png')}
-              style={{ width: 110, height: 110 }}
-              resizeMode="contain"
-            />
-            <Text className="text-base font-bold text-slate-900 mt-2 mb-1">
-              Your journey starts here.
+          <View className="items-center py-10 bg-white rounded-[32px] border border-slate-50 shadow-sm">
+            <View className="w-16 h-16 bg-indigo-50 rounded-full items-center justify-center mb-4">
+              <SparklesIcon size={32} color="#6366f1" />
+            </View>
+            <Text className="text-slate-900 font-bold text-lg mb-2">No Habits Yet</Text>
+            <Text className="text-slate-400 text-center px-10 leading-5">
+              Start your journey today by adding your first daily habit.
             </Text>
-            <Text className="text-slate-400 text-center px-10 text-xs leading-4 font-medium mb-6">
-              Complete your daily habits to unlock badges and track your growth.
-            </Text>
-            
-            <TouchableOpacity className="bg-indigo-600 px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-200">
-              <Text className="text-white font-bold text-base">Add Habit</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-
-      {/* Persistent Bottom Nav (Fixed to Bottom - Slimmer) */}
-      <View 
-        className="absolute bottom-0 left-0 right-0 bg-white h-20 rounded-t-[32px] flex-row items-center px-8 shadow-2xl border-t border-slate-50"
-        style={{ 
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: -10 },
-          shadowOpacity: 0.05,
-          shadowRadius: 15,
-          elevation: 30,
-          paddingBottom: 10
-        }}
-      >
-        <TouchableOpacity className="flex-1 items-center justify-center">
-          <HomeIcon size={24} color="#94a3b8" />
-          <Text className="text-[9px] text-slate-400 font-bold mt-1">Home</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity className="flex-1 items-center justify-center">
-          <ChartBarIcon size={24} color="#94a3b8" />
-          <Text className="text-[9px] text-slate-400 font-bold mt-1">Statistics</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          className="flex-1 items-center justify-center bg-indigo-50/80 rounded-xl py-1.5 px-2"
-          style={{ maxWidth: 70 }}
-        >
-          <UserCircleIconSolid size={24} color="#6366f1" />
-          <Text className="text-[9px] text-indigo-600 font-bold mt-0.5">Profile</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };
