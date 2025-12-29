@@ -1,4 +1,4 @@
-import { sqliteProxy } from "drizzle-orm/sqlite-proxy";
+import { drizzle } from "drizzle-orm/sqlite-proxy";
 import SQLite from "react-native-sqlite-storage";
 import * as schema from "./schema";
 import migrations from "../../drizzle/migrations";
@@ -9,79 +9,102 @@ const sqlite = SQLite.openDatabase({
   location: "default",
 });
 
-// Proxy driver implementation
-export const db = sqliteProxy(async (sql, params, method) => {
+// Create a callback function for the proxy driver
+const callback = async (sql: string, params: any[], method: "all" | "run" | "get" | "values") => {
   try {
-    const results = await new Promise((resolve, reject) => {
+    const results = await new Promise<any[]>((resolve, reject) => {
       sqlite.transaction((tx) => {
         tx.executeSql(sql, params, (_, res) => {
-          // Convert SQLite result set to an array for Drizzle
-          const rows = [];
+          const rows: any[] = [];
           for (let i = 0; i < res.rows.length; i++) {
             rows.push(res.rows.item(i));
           }
           resolve(rows);
-        }, (_, err) => reject(err));
+        }, (_, err) => {
+          reject(err);
+          return false;
+        });
       });
     });
 
-    if (method === "get") return results[0];
-    if (method === "all") return results;
-    if (method === "run") return { rowsAffacted: 0 }; // 'run' usually doesn't need rows
-    return results;
+    // Drizzle expects {rows: [...]} format
+    return { rows: results };
   } catch (e) {
     console.error("Drizzle Proxy Error:", e);
     throw e;
   }
-}, { schema });
+};
 
-// Migration runner using the same proxy principle
+// Initialize Drizzle with the proxy
+export const db = drizzle(callback, { schema });
+
+// Migration runner
 export const runMigrations = async () => {
-  const execute = (sql, params = []) => new Promise((resolve, reject) => {
-    sqlite.transaction((tx) => {
-      tx.executeSql(sql, params, (_, res) => resolve(res), (_, err) => reject(err));
-    });
-  });
-
-  // 1. Create migrations table
-  await execute(`
-    CREATE TABLE IF NOT EXISTS __drizzle_migrations (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT UNIQUE,
-      hash TEXT UNIQUE,
-      created_at INTEGER NOT NULL
-    );
-  `);
-
   try {
-    await execute(`ALTER TABLE __drizzle_migrations ADD COLUMN name TEXT UNIQUE`);
-  } catch (e) { }
+    console.log("Starting migrations...");
+    console.log("Migrations object:", migrations);
+    console.log("Migrations.migrations:", migrations.migrations);
 
-  const migrationKeys = Object.keys(migrations.migrations).sort();
+    const execute = (sql: string, params: any[] = []) => new Promise((resolve, reject) => {
+      sqlite.transaction((tx) => {
+        tx.executeSql(sql, params, (_, res) => resolve(res), (_, err) => {
+          reject(err);
+          return false;
+        });
+      });
+    });
 
-  for (const key of migrationKeys) {
-    const res = await execute(
-      `SELECT id FROM __drizzle_migrations WHERE name = ? OR hash = ?`,
-      [key, key]
-    );
+    // Create migrations table
+    await execute(`
+      CREATE TABLE IF NOT EXISTS __drizzle_migrations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT UNIQUE,
+        hash TEXT UNIQUE,
+        created_at INTEGER NOT NULL
+      );
+    `);
 
-    if (res.rows.length > 0) continue;
+    try {
+      await execute(`ALTER TABLE __drizzle_migrations ADD COLUMN name TEXT UNIQUE`);
+    } catch (e) { }
 
-    console.log(`Applying migration: ${key}`);
-    const sql = migrations.migrations[key];
-    const statements = sql.split('--> statement-breakpoint');
-
-    for (const statement of statements) {
-      const trimmed = statement.trim();
-      if (trimmed) {
-        const finalSql = trimmed.replace(/CREATE TABLE (`?\w+`?)/i, 'CREATE TABLE IF NOT EXISTS $1');
-        await execute(finalSql);
-      }
+    if (!migrations || !migrations.migrations) {
+      console.error("Migrations object is invalid:", migrations);
+      throw new Error("Migrations not properly loaded");
     }
 
-    await execute(
-      `INSERT INTO __drizzle_migrations (name, hash, created_at) VALUES (?, ?, ?)`,
-      [key, key, Date.now()]
-    );
+    const migrationKeys = Object.keys(migrations.migrations).sort();
+    console.log("Migration keys:", migrationKeys);
+
+    for (const key of migrationKeys) {
+      const res: any = await execute(
+        `SELECT id FROM __drizzle_migrations WHERE name = ? OR hash = ?`,
+        [key, key]
+      );
+
+      if (res.rows.length > 0) continue;
+
+      console.log(`Applying migration: ${key}`);
+      const sql = migrations.migrations[key];
+      const statements = sql.split('--> statement-breakpoint');
+
+      for (const statement of statements) {
+        const trimmed = statement.trim();
+        if (trimmed) {
+          const finalSql = trimmed.replace(/CREATE TABLE (`?\w+`?)/i, 'CREATE TABLE IF NOT EXISTS $1');
+          await execute(finalSql);
+        }
+      }
+
+      await execute(
+        `INSERT INTO __drizzle_migrations (name, hash, created_at) VALUES (?, ?, ?)`,
+        [key, key, Date.now()]
+      );
+    }
+
+    console.log("Migrations completed successfully");
+  } catch (error) {
+    console.error("Migration error details:", error);
+    throw error;
   }
 };
