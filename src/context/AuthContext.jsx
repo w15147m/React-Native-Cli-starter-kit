@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { getItem, setItem, removeItem } from '../utils/storage';
+import * as authServices from '../services/authServices';
 
 export const AuthContext = createContext();
 
@@ -45,8 +46,36 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateProfile = async (updates) => {
+    try {
+      const updatedUser = {
+        ...user,
+        user: {
+          ...user.user,
+          ...updates
+        }
+      };
+      await setItem('authInfo', updatedUser);
+      setUser(updatedUser);
+      return updatedUser;
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
+    }
+  };
+
+  const changePassword = async (oldPassword, newPassword) => {
+    try {
+      if (!user?.user?.id) throw new Error('User not found');
+      await authServices.changePassword(user.user.id, oldPassword, newPassword);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, updateProfile, changePassword, loading }}>
       {children}
     </AuthContext.Provider>
   );

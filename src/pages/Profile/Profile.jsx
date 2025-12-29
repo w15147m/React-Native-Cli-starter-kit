@@ -8,7 +8,7 @@ import {
   Image,
   SafeAreaView
 } from 'react-native';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { 
   Cog6ToothIcon,
@@ -84,7 +84,7 @@ const Profile = () => {
           
           <View className="items-center py-4">
             <Image 
-              source={require('../assets/3D-Icon/Bunny-small.png')}
+              source={require('../../assets/3D-Icon/Bunny-small.png')}
               style={{ width: 110, height: 110 }}
               resizeMode="contain"
             />

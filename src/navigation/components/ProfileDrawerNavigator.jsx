@@ -2,6 +2,8 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import ProfileDrawer from './ProfileDrawer';
+import EditProfile from '../../pages/Profile/components/EditProfile';
+import Profile from '../../pages/Profile/Profile';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,6 +22,13 @@ const ProfileDrawerNavigator = () => {
       }}
     >
       <Drawer.Screen name="TabsRoot" component={TabNavigator} />
+      <Drawer.Screen 
+        name="EditProfile" 
+        component={EditProfile}
+        options={{
+          drawerItemStyle: { display: 'none' }
+        }}
+      />
     </Drawer.Navigator>
   );
 };

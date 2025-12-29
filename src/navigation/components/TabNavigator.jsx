@@ -15,7 +15,7 @@ import {
 import CustomTabBar from './CustomTabBar';
 import Home from '../../pages/Home';
 import Statistics from '../../pages/Statistics';
-import Profile from '../../pages/Profile';
+import Profile from '../../pages/Profile/Profile';
 
 const Tab = createBottomTabNavigator();
 

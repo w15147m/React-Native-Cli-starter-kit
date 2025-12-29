@@ -46,7 +46,7 @@ const ProfileDrawer = (props) => {
   };
 
   const handleEditProfile = () => {
-    showAlert('Edit Profile', 'Redirecting to edit profile...', 'info');
+    props.navigation.navigate('EditProfile');
   };
 
   return (
