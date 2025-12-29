@@ -79,11 +79,3 @@ To learn more about React Native, take a look at the following resources:
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
 
 
-
-<!-- echo "# React-Native-Cli-starter-kit" >> README.md
-git init
-git add .
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/w15147m/React-Native-Cli-starter-kit.git
-git push -u origin main -->
