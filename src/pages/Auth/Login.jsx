@@ -11,6 +11,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { AuthContext } from '../../context/AuthContext';
 import { login as loginService } from '../../services/authServices';
 import AuthLayout from '../../components/AuthLayout';
+import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline';
+import { EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/solid';
 
 const Login = ({ navigation }) => {
   const { login } = useContext(AuthContext);
@@ -48,7 +50,10 @@ const Login = ({ navigation }) => {
     >
       <View className="space-y-4">
         {/* Email Field */}
-        <View>
+        <View className="relative">
+          <View className="absolute left-4 top-4 z-10">
+            <EnvelopeIcon size={24} color="#94a3b8" />
+          </View>
           <Controller
             control={control}
             name="email"
@@ -61,7 +66,7 @@ const Login = ({ navigation }) => {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-slate-50 text-slate-900 p-4 rounded-2xl border ${
+                className={`bg-slate-50 text-slate-900 p-4 pl-12 rounded-2xl border ${
                   errors.email ? 'border-red-500' : 'border-slate-200'
                 }`}
                 placeholder="You@example.com"
@@ -74,16 +79,19 @@ const Login = ({ navigation }) => {
               />
             )}
           />
+        </View>
           {errors.email && (
             <Text className="text-red-500 text-sm mt-1 ml-2">
               {errors.email.message}
             </Text>
           )}
-        </View>
 
         {/* Password Field */}
         <View>
           <View className="relative">
+            <View className="absolute left-4 top-4 z-10">
+              <LockClosedIcon size={24} color="#94a3b8" />
+            </View>
             <Controller
               control={control}
               name="password"
@@ -96,7 +104,7 @@ const Login = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 text-slate-900 p-4 pr-12 rounded-2xl border ${
+                  className={`bg-slate-50 text-slate-900 p-4 pl-12 pr-12 rounded-2xl border ${
                     errors.password ? 'border-red-500' : 'border-slate-200'
                   }`}
                   placeholder="Enter your password"
@@ -112,7 +120,11 @@ const Login = ({ navigation }) => {
               onPress={() => setShowPassword(!showPassword)}
               className="absolute right-4 top-4"
             >
-              <Text className="text-xl">{showPassword ? '👁️' : '👁️‍🗨️'}</Text>
+              {showPassword ? (
+                <EyeSlashIcon size={24} color="#6d28d9" />
+              ) : (
+                <EyeIcon size={24} color="#94a3b8" />
+              )}
             </TouchableOpacity>
           </View>
           {errors.password && (

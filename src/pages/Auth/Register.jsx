@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Platform,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { AuthContext } from '../../context/AuthContext';
 import { register as registerService } from '../../services/authServices';
 import AuthLayout from '../../components/AuthLayout';
+import { EyeIcon, EyeSlashIcon, UserIcon, EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/outline';
 
 const Register = ({ navigation }) => {
   const { login } = useContext(AuthContext);
@@ -63,29 +65,34 @@ const Register = ({ navigation }) => {
       <View className="space-y-4">
         {/* Name Field */}
         <View>
-          <Controller
-            control={control}
-            name="name"
-            rules={{
-              required: 'Name is required',
-              minLength: {
-                value: 2,
-                message: 'Name must be at least 2 characters',
-              },
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                className={`bg-slate-50 text-slate-900 p-4 rounded-2xl border ${
-                  errors.name ? 'border-red-500' : 'border-slate-200'
-                }`}
-                placeholder="Full Name"
-                placeholderTextColor="#94a3b8"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-          />
+          <View className="relative">
+            <View className="absolute left-4 top-4 z-10">
+              <UserIcon size={24} color="#94a3b8" />
+            </View>
+            <Controller
+              control={control}
+              name="name"
+              rules={{
+                required: 'Name is required',
+                minLength: {
+                  value: 2,
+                  message: 'Name must be at least 2 characters',
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  className={`bg-slate-50 text-slate-900 p-4 pl-12 rounded-2xl border ${
+                    errors.name ? 'border-red-500' : 'border-slate-200'
+                  }`}
+                  placeholder="Full Name"
+                  placeholderTextColor="#94a3b8"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </View>
           {errors.name && (
             <Text className="text-red-500 text-sm mt-1 ml-2">
               {errors.name.message}
@@ -95,31 +102,36 @@ const Register = ({ navigation }) => {
 
         {/* Email Field */}
         <View>
-          <Controller
-            control={control}
-            name="email"
-            rules={{
-              required: 'Email is required',
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Invalid email address',
-              },
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                className={`bg-slate-50 text-slate-900 p-4 rounded-2xl border ${
-                  errors.email ? 'border-red-500' : 'border-slate-200'
-                }`}
-                placeholder="You@example.com"
-                placeholderTextColor="#94a3b8"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-          />
+          <View className="relative">
+            <View className="absolute left-4 top-4 z-10">
+              <EnvelopeIcon size={24} color="#94a3b8" />
+            </View>
+            <Controller
+              control={control}
+              name="email"
+              rules={{
+                required: 'Email is required',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Invalid email address',
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  className={`bg-slate-50 text-slate-900 p-4 pl-12 rounded-2xl border ${
+                    errors.email ? 'border-red-500' : 'border-slate-200'
+                  }`}
+                  placeholder="You@example.com"
+                  placeholderTextColor="#94a3b8"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </View>
           {errors.email && (
             <Text className="text-red-500 text-sm mt-1 ml-2">
               {errors.email.message}
@@ -130,6 +142,9 @@ const Register = ({ navigation }) => {
         {/* Password Field */}
         <View>
           <View className="relative">
+            <View className="absolute left-4 top-4 z-10">
+              <LockClosedIcon size={24} color="#94a3b8" />
+            </View>
             <Controller
               control={control}
               name="password"
@@ -142,7 +157,7 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 text-slate-900 p-4 pr-12 rounded-2xl border ${
+                  className={`bg-slate-50 text-slate-900 p-4 pl-12 pr-12 rounded-2xl border ${
                     errors.password ? 'border-red-500' : 'border-slate-200'
                   }`}
                   placeholder="Create a password"
@@ -158,7 +173,11 @@ const Register = ({ navigation }) => {
               onPress={() => setShowPassword(!showPassword)}
               className="absolute right-4 top-4"
             >
-              <Text className="text-xl">{showPassword ? '👁️' : '👁️‍🗨️'}</Text>
+              {showPassword ? (
+                <EyeSlashIcon size={24} color="#6d28d9" />
+              ) : (
+                <EyeIcon size={24} color="#94a3b8" />
+              )}
             </TouchableOpacity>
           </View>
           {errors.password && (
