@@ -4,9 +4,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
 import { ActivityIndicator, View } from 'react-native';
 
-import TabNavigator from './components/TabNavigator';
+// Navigators
+import ProfileDrawerNavigator from './components/ProfileDrawerNavigator';
 import AuthNavigator from './components/AuthNavigator';
 
+// Special Screens
 import SplashScreen from '../pages/SplashScreen';
 
 const Stack = createStackNavigator();
@@ -20,6 +22,7 @@ const AppNavigator = () => {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
 
+  // 2. Auth Loading State
   if (loading) {
     return (
       <View className="flex-1 bg-[#F8FAFC] justify-center items-center">
@@ -33,7 +36,7 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {user ? (
-          <Stack.Screen name="App" component={TabNavigator} />
+          <Stack.Screen name="App" component={ProfileDrawerNavigator} />
         ) : (
           <Stack.Screen name="Auth" component={AuthNavigator} />
         )}

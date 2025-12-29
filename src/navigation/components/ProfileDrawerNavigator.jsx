@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Profile from '../../pages/Profile';
+import TabNavigator from './TabNavigator';
 import ProfileDrawer from './ProfileDrawer';
 
 const Drawer = createDrawerNavigator();
@@ -16,9 +16,10 @@ const ProfileDrawerNavigator = () => {
         drawerStyle: {
           width: '80%',
         },
+        swipeEnabled: false, // Disable swipe to prevent accidental openings on Home/Stats
       }}
     >
-      <Drawer.Screen name="ProfileMain" component={Profile} />
+      <Drawer.Screen name="TabsRoot" component={TabNavigator} />
     </Drawer.Navigator>
   );
 };
