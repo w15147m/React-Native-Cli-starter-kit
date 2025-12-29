@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Dimensions } from 'react-native';
+import { View, Image, Dimensions, StyleSheet } from 'react-native';
 
 const { height } = Dimensions.get('window');
 
@@ -36,7 +36,12 @@ const AuthIconsGrid = () => {
       style={{ height: height * 0.4 }} 
       className="bg-slate-50 justify-center items-center overflow-hidden"
     >
-      <View className="flex-row flex-wrap justify-center items-center px-2">
+      {/* Decorative background circles */}
+      <View style={styles.topCircle} />
+      <View style={styles.bottomCircle} />
+      <View style={styles.accentCircle} />
+
+      <View className="flex-row flex-wrap justify-center items-center px-2 z-10">
         {icons.slice(0, 12).map((source, i) => (
           <View 
             key={i} 
@@ -54,9 +59,44 @@ const AuthIconsGrid = () => {
           </View>
         ))}
       </View>
-      <View className="absolute inset-0 bg-slate-50/10" />
+      
+      {/* Subtle overlay */}
+      <View className="absolute inset-0 bg-slate-50/5" />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  topCircle: {
+    position: 'absolute',
+    top: -50,
+    right: -30,
+    width: 250,
+    height: 250,
+    borderRadius: 125,
+    backgroundColor: '#e9d5ff',
+    opacity: 0.4,
+  },
+  bottomCircle: {
+    position: 'absolute',
+    bottom: 20,
+    left: -80,
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    backgroundColor: '#ccfbf1',
+    opacity: 0.3,
+  },
+  accentCircle: {
+    position: 'absolute',
+    top: 100,
+    left: 40,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#fed7aa',
+    opacity: 0.2,
+  }
+});
 
 export default AuthIconsGrid;
