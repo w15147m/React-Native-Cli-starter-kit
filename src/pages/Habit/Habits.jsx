@@ -14,6 +14,7 @@ import {
   PlusIcon
 } from 'react-native-heroicons/outline';
 import { CheckCircleIcon as CheckCircleIconSolid } from 'react-native-heroicons/solid';
+import CreateHabitModal from './components/CreateHabitModal';
 
 const dummyHabits = [
   { id: 1, title: 'Drink Water', description: 'Stay hydrated by drinking at least 6-8 glasses of water daily.' },
@@ -27,6 +28,12 @@ const dummyHabits = [
 const Habits = () => {
   const navigation = useNavigation();
   const [selectedHabitId, setSelectedHabitId] = useState(null);
+  const [createModalVisible, setCreateModalVisible] = useState(false);
+
+  const handleCreateHabit = async (data) => {
+    console.log('New Habit Data:', data);
+    // TODO: Implement actual database creation
+  };
 
   const handleSave = () => {
     if (selectedHabitId) {
@@ -83,11 +90,17 @@ const Habits = () => {
         {/* Floating Action Button */}
         <TouchableOpacity
           className="absolute bottom-20 right-3 w-14 h-14 bg-indigo-600 rounded-full items-center justify-center shadow-lg shadow-indigo-300 z-50"
-          onPress={() => console.log('Create custom habit')}
+          onPress={() => setCreateModalVisible(true)}
           activeOpacity={0.9}
         >
           <PlusIcon size={28} color="white" />
         </TouchableOpacity>
+
+        <CreateHabitModal 
+          visible={createModalVisible}
+          onClose={() => setCreateModalVisible(false)}
+          onCreate={handleCreateHabit}
+        />
       </View>
     </SafeAreaView>
   );

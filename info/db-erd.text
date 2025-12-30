@@ -44,6 +44,7 @@ habits
 - id (PK)
 - user_id (FK → users.id)
 - title
+- icon
 - description
 - habit_type (boolean | count | time)
 - target_value (nullable) -- e.g. 10 reps, 30 min

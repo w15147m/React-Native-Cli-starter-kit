@@ -5,6 +5,7 @@ export const habits = sqliteTable("habits", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   user_id: integer("user_id").references(() => users.id).notNull(),
   title: text("title").notNull(),
+  icon: text("icon"), // e.g. 'book', 'water', 'footsteps'
   description: text("description"),
   habit_type: text("habit_type").notNull(), // 'boolean' | 'count' | 'time'
   target_value: integer("target_value"),
