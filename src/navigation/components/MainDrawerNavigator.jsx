@@ -3,7 +3,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import ProfileDrawer from './ProfileDrawer';
 import EditProfile from '../../pages/Profile/components/EditProfile';
-import Profile from '../../pages/Profile/Profile';
 
 const Drawer = createDrawerNavigator();
 
@@ -22,13 +21,6 @@ const MainDrawerNavigator = () => {
       }}
     >
       <Drawer.Screen name="TabsRoot" component={TabNavigator} />
-      <Drawer.Screen 
-        name="Profile" 
-        component={Profile}
-        options={{
-          drawerItemStyle: { display: 'none' }
-        }}
-      />
       <Drawer.Screen 
         name="EditProfile" 
         component={EditProfile}

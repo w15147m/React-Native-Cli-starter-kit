@@ -12,7 +12,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useAlert } from '../../context/AlertContext';
 import { useNavigation } from '@react-navigation/native';
 import { 
-  Cog6ToothIcon,
+  Bars3Icon,
   PencilSquareIcon,
   UserIcon,
   LockClosedIcon,
@@ -34,10 +34,6 @@ const Profile = () => {
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  const stats = [
-    { label: 'Total Completed Habit', value: '0' },
-    { label: 'Experience Points (XP)', value: '0' },
-  ];
 
   const handleUpdateProfile = async (data) => {
     try {
@@ -83,7 +79,7 @@ const Profile = () => {
             onPress={() => navigation.openDrawer()}
             className="p-2 rounded-xl bg-white shadow-sm border border-slate-100"
           >
-            <Cog6ToothIcon size={22} color="#1e293b" />
+            <Bars3Icon size={22} color="#1e293b" />
           </TouchableOpacity>
         </View>
 
@@ -135,20 +131,6 @@ const Profile = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Stats Grid */}
-        <View className="flex-row mx-6 mb-6">
-          {stats.map((stat, index) => (
-            <View 
-              key={index} 
-              className={`flex-1 bg-white rounded-[22px] p-4 shadow-md shadow-slate-200/40 border border-slate-50 ${index === 0 ? 'mr-3' : 'ml-3'}`}
-            >
-              <Text className="text-xl font-black text-slate-900 mb-0.5">{stat.value}</Text>
-              <Text className="text-slate-400 text-[10px] font-bold leading-3 pr-2">
-                {stat.label}
-              </Text>
-            </View>
-          ))}
-        </View>
 
 
         {/* Achievements Section */}
@@ -168,9 +150,6 @@ const Profile = () => {
               Complete your daily habits to unlock badges and track your growth.
             </Text>
             
-            <TouchableOpacity className="bg-indigo-600 px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-200">
-              <Text className="text-white font-bold text-base">Add Habit</Text>
-            </TouchableOpacity>
           </View>
         </View>
         

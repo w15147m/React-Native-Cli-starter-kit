@@ -16,6 +16,10 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
     >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
+        
+        // Hide tab if specific option is set
+        if (options.tabBarItemStyle?.display === 'none') return null;
+
         const label = options.tabBarLabel !== undefined ? options.tabBarLabel : options.title !== undefined ? options.title : route.name;
         const isFocused = state.index === index;
 

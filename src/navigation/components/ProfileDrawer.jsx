@@ -44,7 +44,7 @@ const ProfileDrawer = (props) => {
   };
 
   const handleEditProfile = () => {
-    props.navigation.navigate('Profile');
+    props.navigation.navigate('TabsRoot', { screen: 'ProfileTab' });
   };
 
   return (
