@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   return (
     <View 
-      className="bg-white h-24 rounded-t-[40px] flex-row items-center px-8 shadow-2xl border-t border-slate-50 absolute bottom-0 left-0 right-0"
+      className="bg-white p-2 rounded-t-[30px] flex-row items-center px-8 shadow-2xl border-t border-slate-50 absolute bottom-0 left-0 right-0"
       style={{ 
         shadowColor: '#000',
         shadowOffset: { width: 0, height: -10 },
@@ -27,7 +27,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
+             navigation.navigate(route.name);
           }
         };
 
