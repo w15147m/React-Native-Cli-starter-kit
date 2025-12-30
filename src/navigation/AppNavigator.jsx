@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { ActivityIndicator, View } from 'react-native';
 
 // Navigators
-import ProfileDrawerNavigator from './components/ProfileDrawerNavigator';
+import MainDrawerNavigator from './components/MainDrawerNavigator';
 import AuthNavigator from './components/AuthNavigator';
 
 // Special Screens
@@ -36,7 +36,7 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {user ? (
-          <Stack.Screen name="App" component={ProfileDrawerNavigator} />
+          <Stack.Screen name="App" component={MainDrawerNavigator} />
         ) : (
           <Stack.Screen name="Auth" component={AuthNavigator} />
         )}

@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { 
-  BellIcon,
+  Bars3Icon,
   FireIcon,
   SparklesIcon
 } from 'react-native-heroicons/outline';
@@ -17,6 +18,7 @@ import {
 const { width } = Dimensions.get('window');
 
 const Home = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView className="flex-1 bg-[#F8FAFC]">
       <ScrollView 
@@ -32,8 +34,11 @@ const Home = () => {
             </Text>
             <Text className="text-2xl font-black text-slate-900">Dashboard</Text>
           </View>
-          <TouchableOpacity className="p-2 rounded-xl bg-white shadow-sm border border-slate-100">
-            <BellIcon size={24} color="#1e293b" />
+          <TouchableOpacity 
+            className="p-2 rounded-xl bg-white shadow-sm border border-slate-100"
+            onPress={() => navigation.openDrawer()}
+          >
+            <Bars3Icon size={24} color="#1e293b" />
           </TouchableOpacity>
         </View>
 

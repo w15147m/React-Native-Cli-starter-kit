@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { 
-  BellIcon,
+  Bars3Icon,
   CheckCircleIcon,
   PlusIcon
 } from 'react-native-heroicons/outline';
@@ -53,8 +53,11 @@ const Habits = () => {
             </Text>
             <Text className="text-2xl font-black text-slate-900">Habits</Text>
           </View>
-          <TouchableOpacity className="p-2 rounded-xl bg-white shadow-sm border border-slate-100">
-            <BellIcon size={24} color="#1e293b" />
+          <TouchableOpacity 
+            className="p-2 rounded-xl bg-white shadow-sm border border-slate-100"
+            onPress={() => navigation.openDrawer()}
+          >
+            <Bars3Icon size={24} color="#1e293b" />
           </TouchableOpacity>
         </View>
 

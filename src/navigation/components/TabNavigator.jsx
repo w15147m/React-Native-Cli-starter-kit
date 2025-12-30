@@ -4,13 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { 
   HomeIcon, 
   ChartBarIcon, 
-  UserCircleIcon,
   ClipboardDocumentListIcon
 } from 'react-native-heroicons/outline';
 import { 
   HomeIcon as HomeIconSolid,
   ChartBarIcon as ChartBarIconSolid,
-  UserCircleIcon as UserCircleIconSolid,
   ClipboardDocumentListIcon as ClipboardDocumentListIconSolid
 } from 'react-native-heroicons/solid';
 
@@ -18,7 +16,6 @@ import {
 import CustomTabBar from './CustomTabBar';
 import Home from '../../pages/Home';
 import Statistics from '../../pages/Statistics';
-import Profile from '../../pages/Profile/Profile';
 import Habits from '../../pages/Habit/Habits';
 
 const Tab = createBottomTabNavigator();
@@ -56,15 +53,6 @@ const TabNavigator = () => {
           title: 'Habits',
           tabBarIcon: (props) => <ClipboardDocumentListIcon {...props} />, 
           tabBarIconActive: (props) => <ClipboardDocumentListIconSolid {...props} />
-        }} 
-      />
-      <Tab.Screen 
-        name="ProfileTab" 
-        component={Profile} 
-        options={{ 
-          title: 'Profile',
-          tabBarIcon: (props) => <UserCircleIcon {...props} />,
-          tabBarIconActive: (props) => <UserCircleIconSolid {...props} />
         }} 
       />
     </Tab.Navigator>

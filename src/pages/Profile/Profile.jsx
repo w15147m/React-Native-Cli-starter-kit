@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -9,23 +9,54 @@ import {
   SafeAreaView
 } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
+import { useAlert } from '../../context/AlertContext';
 import { useNavigation } from '@react-navigation/native';
 import { 
   Cog6ToothIcon,
   PencilSquareIcon,
   UserIcon,
+  LockClosedIcon,
+  TrashIcon,
+  ChevronRightIcon
 } from 'react-native-heroicons/outline';
+import ChangePasswordModal from './components/ChangePasswordModal';
 
 const { width, height } = Dimensions.get('window');
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout, changePassword } = useContext(AuthContext);
+  const { showAlert } = useAlert();
   const navigation = useNavigation();
+  const [passwordModalVisible, setPasswordModalVisible] = useState(false);
 
   const stats = [
     { label: 'Total Completed Habit', value: '0' },
     { label: 'Experience Points (XP)', value: '0' },
   ];
+
+  const handleDeleteAccount = () => {
+    showAlert(
+      'Delete Account',
+      'This action is permanent. Are you sure you want to delete your account?',
+      'error',
+      () => {
+        // Implementation for delete account would go here
+        showAlert('Info', 'Delete account request sent', 'info');
+      }
+    );
+  };
+
+  const handleChangePassword = async (oldPassword, newPassword) => {
+    try {
+      await changePassword(oldPassword, newPassword);
+      showAlert('Success', 'Password changed successfully! Please login again.', 'success', () => {
+         logout();
+      });
+    } catch (error) {
+      showAlert('Error', error.message, 'error');
+      throw error;
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-[#F8FAFC]">
@@ -58,9 +89,6 @@ const Profile = () => {
               @{user?.user?.name?.toLowerCase().replace(/\s/g, '') || 'username'}
             </Text>
           </View>
-          <TouchableOpacity className="p-2">
-            <PencilSquareIcon size={22} color="#6366f1" />
-          </TouchableOpacity>
         </View>
 
         {/* Stats Grid */}
@@ -76,6 +104,53 @@ const Profile = () => {
               </Text>
             </View>
           ))}
+        </View>
+
+        {/* Actions Grid */}
+        <View className="px-6 space-y-3 mb-6">
+          <Text className="text-lg font-bold text-slate-900 mb-1">Account Options</Text>
+          
+          <TouchableOpacity 
+            onPress={() => navigation.navigate('EditProfile')}
+            className="flex-row items-center bg-white p-4 rounded-2xl border border-slate-50 shadow-sm"
+          >
+            <View className="w-10 h-10 bg-indigo-50 rounded-full items-center justify-center mr-4">
+              <PencilSquareIcon size={20} color="#6366f1" />
+            </View>
+            <View className="flex-1">
+              <Text className="text-slate-900 font-bold text-base">Edit Profile</Text>
+              <Text className="text-slate-400 text-xs">Update your name and email</Text>
+            </View>
+            <ChevronRightIcon size={20} color="#cbd5e1" />
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            onPress={() => setPasswordModalVisible(true)}
+            className="flex-row items-center bg-white p-4 rounded-2xl border border-slate-50 shadow-sm"
+          >
+            <View className="w-10 h-10 bg-indigo-50 rounded-full items-center justify-center mr-4">
+              <LockClosedIcon size={20} color="#6366f1" />
+            </View>
+            <View className="flex-1">
+              <Text className="text-slate-900 font-bold text-base">Change Password</Text>
+              <Text className="text-slate-400 text-xs">Update your security</Text>
+            </View>
+            <ChevronRightIcon size={20} color="#cbd5e1" />
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            onPress={handleDeleteAccount}
+            className="flex-row items-center bg-white p-4 rounded-2xl border border-slate-50 shadow-sm"
+          >
+            <View className="w-10 h-10 bg-rose-50 rounded-full items-center justify-center mr-4">
+              <TrashIcon size={20} color="#ef4444" />
+            </View>
+            <View className="flex-1">
+              <Text className="text-slate-900 font-bold text-base">Delete Account</Text>
+              <Text className="text-slate-400 text-xs">Permanently remove your data</Text>
+            </View>
+            <ChevronRightIcon size={20} color="#cbd5e1" />
+          </TouchableOpacity>
         </View>
 
         {/* Achievements Section */}
@@ -100,6 +175,12 @@ const Profile = () => {
             </TouchableOpacity>
           </View>
         </View>
+        
+        <ChangePasswordModal 
+          visible={passwordModalVisible}
+          onClose={() => setPasswordModalVisible(false)}
+          onChangePassword={handleChangePassword}
+        />
       </ScrollView>
     </SafeAreaView>
   );

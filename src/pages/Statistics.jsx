@@ -7,15 +7,18 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { 
   ChartBarSquareIcon,
   ArrowUpIcon,
-  ArrowDownIcon
+  ArrowDownIcon,
+  Bars3Icon
 } from 'react-native-heroicons/outline';
 
 const { width } = Dimensions.get('window');
 
 const Statistics = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView className="flex-1 bg-[#F8FAFC]">
       <ScrollView 
@@ -24,9 +27,17 @@ const Statistics = () => {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         {/* Header */}
-        <View className="px-6 pt-4 mb-8">
-          <Text className="text-2xl font-black text-slate-900">Statistics</Text>
-          <Text className="text-slate-400 font-medium text-sm mt-1">Track your consistency</Text>
+        <View className="px-6 pt-4 mb-8 flex-row justify-between items-start">
+          <View>
+            <Text className="text-2xl font-black text-slate-900">Statistics</Text>
+            <Text className="text-slate-400 font-medium text-sm mt-1">Track your consistency</Text>
+          </View>
+          <TouchableOpacity 
+            className="p-2 rounded-xl bg-white shadow-sm border border-slate-100"
+            onPress={() => navigation.openDrawer()}
+          >
+            <Bars3Icon size={24} color="#1e293b" />
+          </TouchableOpacity>
         </View>
 
         {/* Dummy Chart Placeholder */}

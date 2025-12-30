@@ -14,8 +14,6 @@ import { AuthContext } from '../../context/AuthContext';
 import { useAlert } from '../../context/AlertContext';
 import {
   UserIcon,
-  PencilSquareIcon,
-  TrashIcon,
   ArrowLeftOnRectangleIcon,
   ChevronRightIcon,
 } from 'react-native-heroicons/outline';
@@ -46,7 +44,7 @@ const ProfileDrawer = (props) => {
   };
 
   const handleEditProfile = () => {
-    props.navigation.navigate('EditProfile');
+    props.navigation.navigate('Profile');
   };
 
   return (
@@ -69,24 +67,13 @@ const ProfileDrawer = (props) => {
         <View className="px-4 space-y-2">
           <TouchableOpacity 
             onPress={handleEditProfile}
-            className="flex-row items-center p-4 rounded-2xl bg-slate-50 border border-slate-100"
+            className="flex-row items-center p-4 rounded-2xl bg-indigo-50 border border-indigo-100"
           >
             <View className="w-10 h-10 bg-indigo-100 rounded-xl items-center justify-center mr-4">
-              <PencilSquareIcon size={22} color="#6366f1" />
+              <UserIcon size={22} color="#6366f1" />
             </View>
-            <Text className="flex-1 text-slate-700 font-bold">Edit Profile</Text>
-            <ChevronRightIcon size={18} color="#94a3b8" />
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            onPress={handleDeleteAccount}
-            className="flex-row items-center p-4 rounded-2xl bg-slate-50 border border-slate-100"
-          >
-            <View className="w-10 h-10 bg-rose-100 rounded-xl items-center justify-center mr-4">
-              <TrashIcon size={22} color="#ef4444" />
-            </View>
-            <Text className="flex-1 text-slate-700 font-bold">Delete Account</Text>
-            <ChevronRightIcon size={18} color="#94a3b8" />
+            <Text className="flex-1 text-slate-900 font-bold text-base">Profile</Text>
+            <ChevronRightIcon size={18} color="#6366f1" />
           </TouchableOpacity>
         </View>
       </DrawerContentScrollView>
