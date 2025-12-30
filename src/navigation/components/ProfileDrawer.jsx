@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StyleSheet,
+  Image,
 } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -52,8 +53,16 @@ const ProfileDrawer = (props) => {
       <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 0 }}>
         {/* Drawer Header / User Info */}
         <View className="bg-indigo-600 p-8 pb-10 rounded-b-[40px] mb-6 shadow-xl">
-          <View className="w-16 h-16 bg-white/20 rounded-[22px] items-center justify-center mb-4 border border-white/30">
-            <UserIcon size={32} color="white" />
+          <View className="w-16 h-16 bg-white/20 rounded-[22px] items-center justify-center mb-4 border border-white/30 overflow-hidden">
+            {user?.user?.profile_image ? (
+              <Image 
+                source={{ uri: user.user.profile_image }} 
+                className="w-full h-full"
+                resizeMode="cover"
+              />
+            ) : (
+              <UserIcon size={32} color="white" />
+            )}
           </View>
           <Text className="text-xl font-bold text-white mb-1">
             {user?.user?.name || 'User Name'}

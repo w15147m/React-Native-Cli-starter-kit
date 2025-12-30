@@ -8,6 +8,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { UserIcon, EnvelopeIcon } from 'react-native-heroicons/outline';
 import BaseModal from '../../../common/components/BaseModal';
+import ImageUploader from '../../../common/components/ImageUploader';
 
 const EditProfileModal = ({ 
   visible, 
@@ -16,6 +17,7 @@ const EditProfileModal = ({
   onUpdateProfile 
 }) => {
   const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     defaultValues: {
@@ -28,13 +30,17 @@ const EditProfileModal = ({
     if (user?.user && visible) {
       setValue('name', user.user.name || '');
       setValue('email', user.user.email || '');
+      setSelectedImage(user.user.profile_image || null);
     }
   }, [user, visible, setValue]);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await onUpdateProfile(data);
+      await onUpdateProfile({
+        ...data,
+        profile_image: selectedImage
+      });
       onClose();
     } catch (error) {
       console.log('Update profile failed', error);
@@ -50,6 +56,15 @@ const EditProfileModal = ({
       title="Edit Profile"
     >
       <View className="space-y-6">
+        {/* Profile Image */}
+        <View className="items-center mb-2">
+          <ImageUploader
+            imageUri={selectedImage}
+            onImageSelected={setSelectedImage}
+            size={100}
+          />
+        </View>
+
         {/* Name Input */}
         <View>
           <Text className="text-slate-500 font-bold mb-2 ml-1">Full Name</Text>

@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import { Alert, Image } from 'react-native';
 import { db } from '../db/client';
 import { users } from '../db/schema';
 import { eq } from 'drizzle-orm';
@@ -29,11 +29,11 @@ export const login = async (email, password) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        profile_image: user.profile_image,
       },
       token,
     };
   } catch (error) {
-    Alert.alert('Login Failed', error.message);
     throw error;
   }
 };
@@ -53,12 +53,16 @@ export const register = async (userData) => {
       throw new Error('Email already registered');
     }
 
+    // Default Profile Image
+    const defaultImage = Image.resolveAssetSource(require('../assets/3D-icons-with-bg/color - 2025-12-30T184226.750.webp')).uri;
+
     // TODO: Hash password before storing (use bcrypt)
     // For now, storing plain text (NOT SECURE - just for demo)
     await db.insert(users).values({
       name,
       email,
       password, // Should be hashed!
+      profile_image: defaultImage,
     });
 
     // Return the created user
@@ -70,11 +74,11 @@ export const register = async (userData) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        profile_image: user.profile_image,
       },
     };
   } catch (error) {
     console.error('Registration error:', error);
-    Alert.alert('Registration Failed', error.message);
     throw error;
   }
 };

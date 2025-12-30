@@ -85,8 +85,16 @@ const Profile = () => {
 
         {/* User Card */}
         <View className="mx-6 bg-white rounded-[28px] p-4 flex-row items-center shadow-lg shadow-slate-200/50 border border-slate-50 mb-4">
-          <View className="w-14 h-14 bg-emerald-100 rounded-[20px] items-center justify-center">
-            <UserIcon size={28} color="#10b981" />
+          <View className="w-14 h-14 bg-emerald-100 rounded-[20px] items-center justify-center overflow-hidden">
+            {user?.user?.profile_image ? (
+              <Image 
+                source={{ uri: user.user.profile_image }} 
+                className="w-full h-full"
+                resizeMode="cover"
+              />
+            ) : (
+              <UserIcon size={28} color="#10b981" />
+            )}
           </View>
           <View className="flex-1 ml-4">
             <Text className="text-lg font-bold text-slate-900">
