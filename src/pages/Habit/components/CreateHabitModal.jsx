@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -53,6 +53,23 @@ const FormInput = ({
 
 const CreateHabitModal = ({ visible, onClose, onCreate }) => {
   const [loading, setLoading] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardWillShowListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      () => setKeyboardVisible(true)
+    );
+    const keyboardWillHideListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => setKeyboardVisible(false)
+    );
+
+    return () => {
+      keyboardWillShowListener.remove();
+      keyboardWillHideListener.remove();
+    };
+  }, []);
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
@@ -83,7 +100,7 @@ const CreateHabitModal = ({ visible, onClose, onCreate }) => {
       onRequestClose={onClose}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 bg-black/50 pt-24">
+        <View className={`flex-1 bg-black/50 ${keyboardVisible ? 'pt-5' : 'pt-24'}`}>
           <View className="flex-1 bg-white rounded-t-[32px] overflow-hidden">
             {/* Header - Fixed at top of modal */}
             <View className="flex-row justify-between items-center p-6 border-b border-slate-50">
