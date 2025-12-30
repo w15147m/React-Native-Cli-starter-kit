@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import { 
   View, 
   Text, 
-  Modal, 
   TouchableOpacity, 
   TextInput, 
-  KeyboardAvoidingView, 
-  Platform,
-  TouchableWithoutFeedback,
   Keyboard
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { XMarkIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline';
+import { LockClosedIcon, EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline';
+import BaseModal from '../../../common/components/BaseModal';
 
 const PasswordInput = ({ 
   name, 
@@ -84,78 +81,57 @@ const ChangePasswordModal = ({ visible, onClose, onChangePassword }) => {
   };
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
+    <BaseModal
       visible={visible}
-      onRequestClose={onClose}
+      onClose={onClose}
+      title="Change Password"
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 justify-end bg-black/50">
-          <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          >
-            <View className="bg-white rounded-t-[32px] p-6 pb-12">
-              <View className="flex-row justify-between items-center mb-6">
-                <Text className="text-2xl font-black text-slate-900">Change Password</Text>
-                <TouchableOpacity 
-                  onPress={onClose}
-                  className="p-2 rounded-full bg-slate-100"
-                >
-                  <XMarkIcon size={24} color="#64748b" />
-                </TouchableOpacity>
-              </View>
+      <PasswordInput 
+        name="oldPassword" 
+        placeholder="Current Password" 
+        showPass={showOldPass} 
+        setShowPass={setShowOldPass}
+        rules={{ required: 'Current password is required' }}
+        control={control}
+        errors={errors}
+      />
 
-              <PasswordInput 
-                name="oldPassword" 
-                placeholder="Current Password" 
-                showPass={showOldPass} 
-                setShowPass={setShowOldPass}
-                rules={{ required: 'Current password is required' }}
-                control={control}
-                errors={errors}
-              />
+      <PasswordInput 
+        name="newPassword" 
+        placeholder="New Password" 
+        showPass={showNewPass} 
+        setShowPass={setShowNewPass}
+        rules={{ 
+          required: 'New password is required',
+          minLength: { value: 6, message: 'Must be at least 6 characters' }
+        }}
+        control={control}
+        errors={errors}
+      />
 
-              <PasswordInput 
-                name="newPassword" 
-                placeholder="New Password" 
-                showPass={showNewPass} 
-                setShowPass={setShowNewPass}
-                rules={{ 
-                  required: 'New password is required',
-                  minLength: { value: 6, message: 'Must be at least 6 characters' }
-                }}
-                control={control}
-                errors={errors}
-              />
+      <PasswordInput 
+        name="confirmPassword" 
+        placeholder="Confirm New Password" 
+        showPass={showConfirmPass} 
+        setShowPass={setShowConfirmPass}
+        rules={{ 
+          required: 'Please confirm new password',
+          validate: value => value === newPassword || 'Passwords do not match'
+        }}
+        control={control}
+        errors={errors}
+      />
 
-              <PasswordInput 
-                name="confirmPassword" 
-                placeholder="Confirm New Password" 
-                showPass={showConfirmPass} 
-                setShowPass={setShowConfirmPass}
-                rules={{ 
-                  required: 'Please confirm new password',
-                  validate: value => value === newPassword || 'Passwords do not match'
-                }}
-                control={control}
-                errors={errors}
-              />
-
-              <TouchableOpacity 
-                onPress={handleSubmit(onSubmit)}
-                disabled={loading}
-                className={`mt-4 p-4 rounded-2xl items-center shadow-lg shadow-indigo-200 ${loading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
-              >
-                <Text className="text-white font-bold text-lg">
-                  {loading ? 'Updating...' : 'Update Password'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
-        </View>
-      </TouchableWithoutFeedback>
-    </Modal>
+      <TouchableOpacity 
+        onPress={handleSubmit(onSubmit)}
+        disabled={loading}
+        className={`mt-4 p-4 rounded-2xl items-center shadow-lg shadow-indigo-200 ${loading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+      >
+        <Text className="text-white font-bold text-lg">
+          {loading ? 'Updating...' : 'Update Password'}
+        </Text>
+      </TouchableOpacity>
+    </BaseModal>
   );
 };
 

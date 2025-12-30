@@ -5,14 +5,11 @@ import {
   Modal, 
   TouchableOpacity, 
   TextInput, 
-  KeyboardAvoidingView, 
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView
+  Keyboard
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { XMarkIcon, SparklesIcon, DocumentTextIcon, TagIcon } from 'react-native-heroicons/outline';
+import { SparklesIcon, DocumentTextIcon, TagIcon } from 'react-native-heroicons/outline';
+import BaseModal from '../../../common/components/BaseModal';
 
 const FormInput = ({ 
   name, 
@@ -53,23 +50,6 @@ const FormInput = ({
 
 const CreateHabitModal = ({ visible, onClose, onCreate }) => {
   const [loading, setLoading] = useState(false);
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-      () => setKeyboardVisible(true)
-    );
-    const keyboardWillHideListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
-      () => setKeyboardVisible(false)
-    );
-
-    return () => {
-      keyboardWillShowListener.remove();
-      keyboardWillHideListener.remove();
-    };
-  }, []);
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
@@ -93,77 +73,47 @@ const CreateHabitModal = ({ visible, onClose, onCreate }) => {
   };
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
+    <BaseModal
       visible={visible}
-      onRequestClose={onClose}
+      onClose={onClose}
+      title="New Habit"
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className={`flex-1 bg-black/50 ${keyboardVisible ? 'pt-5' : 'pt-24'}`}>
-          <View className="flex-1 bg-white rounded-t-[32px] overflow-hidden">
-            {/* Header - Fixed at top of modal */}
-            <View className="flex-row justify-between items-center p-6 border-b border-slate-50">
-              <Text className="text-2xl font-black text-slate-900">New Habit</Text>
-              <TouchableOpacity 
-                onPress={onClose}
-                className="p-2 rounded-full bg-slate-100"
-              >
-                <XMarkIcon size={24} color="#64748b" />
-              </TouchableOpacity>
-            </View>
+      <FormInput 
+        name="title" 
+        placeholder="Habit Title" 
+        icon={SparklesIcon}
+        rules={{ required: 'Habit title is required' }}
+        control={control}
+        errors={errors}
+      />
 
-            {/* Content Container with Keyboard Handling */}
-            <KeyboardAvoidingView 
-              behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-              className="flex-1"
-            >
-              <ScrollView 
-                className="flex-1 px-6"
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 100, paddingTop: 16 }}
-              >
-                <FormInput 
-                  name="title" 
-                  placeholder="Habit Title" 
-                  icon={SparklesIcon}
-                  rules={{ required: 'Habit title is required' }}
-                  control={control}
-                  errors={errors}
-                />
+      <FormInput 
+        name="description" 
+        placeholder="Description" 
+        icon={DocumentTextIcon}
+        control={control}
+        errors={errors}
+        multiline={true}
+      />
 
-                <FormInput 
-                  name="description" 
-                  placeholder="Description" 
-                  icon={DocumentTextIcon}
-                  control={control}
-                  errors={errors}
-                  multiline={true}
-                />
+      <FormInput 
+        name="icon" 
+        placeholder="Icon Name (e.g. fire, book)" 
+        icon={TagIcon}
+        control={control}
+        errors={errors}
+      />
 
-                <FormInput 
-                  name="icon" 
-                  placeholder="Icon Name (e.g. fire, book)" 
-                  icon={TagIcon}
-                  control={control}
-                  errors={errors}
-                />
-
-                <TouchableOpacity 
-                  onPress={handleSubmit(onSubmit)}
-                  disabled={loading}
-                  className={`mt-4 p-4 rounded-2xl items-center shadow-lg shadow-indigo-200 ${loading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
-                >
-                  <Text className="text-white font-bold text-lg">
-                    {loading ? 'Creating...' : 'Create Habit'}
-                  </Text>
-                </TouchableOpacity>
-              </ScrollView>
-            </KeyboardAvoidingView>
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </Modal>
+      <TouchableOpacity 
+        onPress={handleSubmit(onSubmit)}
+        disabled={loading}
+        className={`mt-4 p-4 rounded-2xl items-center shadow-lg shadow-indigo-200 ${loading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+      >
+        <Text className="text-white font-bold text-lg">
+          {loading ? 'Creating...' : 'Create Habit'}
+        </Text>
+      </TouchableOpacity>
+    </BaseModal>
   );
 };
 
