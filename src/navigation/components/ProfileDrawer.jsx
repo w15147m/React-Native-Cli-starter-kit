@@ -69,10 +69,8 @@ const ProfileDrawer = (props) => {
             onPress={handleEditProfile}
             className="flex-row items-center p-4 rounded-2xl bg-indigo-50 border border-indigo-100"
           >
-            <View className="w-10 h-10 bg-indigo-100 rounded-xl items-center justify-center mr-4">
-              <UserIcon size={22} color="#6366f1" />
-            </View>
-            <Text className="flex-1 text-slate-900 font-bold text-base">Profile</Text>
+            <UserIcon size={22} color="#6366f1" />
+            <Text className="flex-1 text-slate-900 font-bold ml-4">Profile</Text>
             <ChevronRightIcon size={18} color="#6366f1" />
           </TouchableOpacity>
         </View>
