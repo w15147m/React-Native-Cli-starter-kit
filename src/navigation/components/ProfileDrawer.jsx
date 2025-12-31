@@ -21,7 +21,7 @@ import {
 
 const ProfileDrawer = (props) => {
   const { user, logout } = useContext(AuthContext);
-  const { showAlert } = useAlert();
+  const { showAlert, showToast } = useAlert();
 
   const handleLogout = () => {
     showAlert(
@@ -39,7 +39,7 @@ const ProfileDrawer = (props) => {
       'error',
       () => {
         // Implementation for delete account would go here
-        showAlert('Info', 'Delete account request sent', 'info');
+        showToast('Delete account request sent', 'info');
       }
     );
   };

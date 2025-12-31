@@ -16,7 +16,7 @@ import { EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/solid';
 
 const Login = ({ navigation }) => {
   const { login } = useContext(AuthContext);
-  const { showAlert } = useAlert();
+  const { showAlert, showToast } = useAlert();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -36,7 +36,7 @@ const Login = ({ navigation }) => {
     try {
       const response = await loginService(data.email, data.password);
       await login(response);
-      showAlert('Success', 'Login successful!', 'success');
+      showToast('Login successful!', 'success');
     } catch (error) {
       showAlert('Error', error.message || 'Login failed', 'error');
     } finally {

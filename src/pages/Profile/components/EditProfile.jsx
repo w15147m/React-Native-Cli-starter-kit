@@ -23,17 +23,15 @@ import { useState } from 'react'; // Ensure useState is imported
 
 const EditProfile = () => {
   const { user, updateProfile, changePassword } = useContext(AuthContext);
-  const { showAlert } = useAlert();
+  const { showAlert, showToast } = useAlert();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleChangePassword = async (oldPassword, newPassword) => {
     try {
       await changePassword(oldPassword, newPassword);
-      showAlert('Success', 'Password changed successfully! Please login again.', 'success', () => {
-        // Optionally logout or navigate
-        navigation.goBack();
-      });
+      showToast('Password changed successfully! Please login again.', 'success');
+      navigation.goBack();
     } catch (error) {
       showAlert('Error', error.message, 'error');
       throw error; // Propagate to modal
@@ -57,12 +55,8 @@ const EditProfile = () => {
   const onSubmit = async (data) => {
     try {
       await updateProfile(data);
-      showAlert(
-        'Success', 
-        'Profile updated successfully!', 
-        'success',
-        () => navigation.goBack()
-      );
+      showToast('Profile updated successfully!', 'success');
+      navigation.goBack();
     } catch (error) {
       showAlert('Error', 'Failed to update profile. Please try again.', 'error');
     }
