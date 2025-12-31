@@ -16,9 +16,10 @@ import { EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/solid';
 
 const Login = ({ navigation }) => {
   const { login } = useContext(AuthContext);
-  const { showAlert, showToast } = useAlert();
+  const { showToast } = useAlert();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
   
   const {
     control,
@@ -33,12 +34,13 @@ const Login = ({ navigation }) => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    setLoginError(''); // Clear previous errors
     try {
       const response = await loginService(data.email, data.password);
       await login(response);
       showToast('Login successful!', 'success');
     } catch (error) {
-      showAlert('Error', error.message || 'Login failed', 'error');
+      setLoginError(error.message || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -130,6 +132,11 @@ const Login = ({ navigation }) => {
           {errors.password && (
             <Text className="text-red-500 text-sm mt-1 ml-2">
               {errors.password.message}
+            </Text>
+          )}
+          {loginError && (
+            <Text className="text-red-500 text-sm mt-1 ml-2">
+              {loginError}
             </Text>
           )}
         </View>
