@@ -58,7 +58,7 @@ const EditProfile = () => {
       showToast('Profile updated successfully!', 'success');
       navigation.goBack();
     } catch (error) {
-      showAlert('Error', 'Failed to update profile. Please try again.', 'error');
+      showToast(error.message || 'Failed to update profile', 'error');
     }
   };
 

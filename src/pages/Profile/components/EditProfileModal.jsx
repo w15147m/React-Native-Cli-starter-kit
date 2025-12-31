@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { UserIcon, EnvelopeIcon } from 'react-native-heroicons/outline';
+import { useAlert } from '../../../context/AlertContext';
 import BaseModal from '../../../common/components/BaseModal';
 import ImageUploader from '../../../common/components/ImageUploader';
 
@@ -18,6 +19,7 @@ const EditProfileModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const { showToast } = useAlert();
 
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     defaultValues: {
@@ -37,13 +39,11 @@ const EditProfileModal = ({
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await onUpdateProfile({
-        ...data,
-        profile_image: selectedImage
-      });
+      showToast('Profile updated successfully!', 'success');
       onClose();
     } catch (error) {
       console.log('Update profile failed', error);
+      showToast(error.message || 'Failed to update profile', 'error');
     } finally {
       setLoading(false);
     }
