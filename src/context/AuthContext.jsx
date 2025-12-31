@@ -35,6 +35,31 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateProfile = async (updates) => {
+    try {
+      if (!user?.user?.id) throw new Error('User not found');
+
+      // 1. Update in Database (SQLite)
+      const updatedDbUser = await authServices.updateUser(user.user.id, updates);
+
+      // 2. Update Local State & Storage
+      const updatedUser = {
+        ...user,
+        user: {
+          ...user.user,
+          ...updatedDbUser // Use actual data from DB to be safe
+        }
+      };
+      
+      await setItem('authInfo', updatedUser);
+      setUser(updatedUser);
+      return updatedUser;
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await removeItem('authInfo');
