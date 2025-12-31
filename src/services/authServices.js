@@ -163,3 +163,22 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
     throw error;
   }
 };
+
+/**
+ * Delete user account
+ * @param {number} userId - User ID
+ * @returns {Promise<boolean>} Success status
+ */
+export const deleteUser = async (userId) => {
+  try {
+    if (!userId) throw new Error('User ID is required');
+
+    // Delete user from database
+    await db.delete(users).where(eq(users.id, userId));
+
+    return true;
+  } catch (error) {
+    console.error('Delete user error:', error);
+    throw error;
+  }
+};

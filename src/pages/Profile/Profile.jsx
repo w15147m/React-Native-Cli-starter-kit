@@ -26,7 +26,7 @@ import DeleteAccountModal from './components/DeleteAccountModal';
 const { width, height } = Dimensions.get('window');
 
 const Profile = () => {
-  const { user, logout, changePassword, updateProfile } = useContext(AuthContext);
+  const { user, logout, changePassword, updateProfile, deleteUser } = useContext(AuthContext);
   const { showAlert, showToast } = useAlert();
   const navigation = useNavigation();
   
@@ -45,10 +45,17 @@ const Profile = () => {
   };
 
   const handleDeleteAccountConfirm = async () => {
-    // Logic for actual deletion would be here or in context
-    showAlert('Info', 'Delete account request sent', 'error', () => {
-      showToast('Processing your request...', 'info');
-    }, 'Confirm Delete');
+    try {
+      // Actually delete the user
+      await deleteUser();
+      
+      // Show confirmation alert with toast after
+      showAlert('Info', 'Delete account request sent', 'error', () => {
+        showToast('Account deleted successfully', 'success');
+      }, 'Confirm Delete');
+    } catch (error) {
+      showToast(error.message || 'Failed to delete account', 'error');
+    }
   };
 
   const handleDeleteAccountPress = () => {

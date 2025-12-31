@@ -70,8 +70,45 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const changePassword = async (oldPassword, newPassword) => {
+    try {
+      if (!user?.user?.id) throw new Error('User not found');
+      
+      // Import and call the change password service
+      const authServices = require('../services/authServices');
+      await authServices.changePassword(user.user.id, oldPassword, newPassword);
+    } catch (error) {
+      console.error('Error changing password:', error);
+      throw error;
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      if (!user?.user?.id) throw new Error('User not found');
+      
+      // Import and call the delete user service
+      const authServices = require('../services/authServices');
+      await authServices.deleteUser(user.user.id);
+      
+      // Logout after deletion
+      await logout();
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      logout, 
+      loading, 
+      updateProfile, 
+      changePassword,
+      deleteUser 
+    }}>
       {children}
     </AuthContext.Provider>
   );
