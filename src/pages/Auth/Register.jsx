@@ -18,6 +18,7 @@ const Register = ({ navigation }) => {
   const { showAlert } = useAlert();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const {
     control,
@@ -183,6 +184,52 @@ const Register = ({ navigation }) => {
           {errors.password && (
             <Text className="text-red-500 text-sm mt-1 ml-2">
               {errors.password.message}
+            </Text>
+          )}
+        </View>
+
+        {/* Confirm Password Field */}
+        <View>
+          <View className="relative">
+            <View className="absolute left-4 top-4 z-10">
+              <LockClosedIcon size={24} color="#94a3b8" />
+            </View>
+            <Controller
+              control={control}
+              name="confirmPassword"
+              rules={{
+                required: 'Please confirm your password',
+                validate: (value) =>
+                  value === password || 'Passwords do not match',
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  className={`bg-slate-50 text-slate-900 p-4 pl-12 pr-12 rounded-2xl border ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-slate-200'
+                  }`}
+                  placeholder="Confirm password"
+                  placeholderTextColor="#94a3b8"
+                  secureTextEntry={!showConfirmPassword}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+            <TouchableOpacity
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-4 top-4"
+            >
+              {showConfirmPassword ? (
+                <EyeSlashIcon size={24} color="#6d28d9" />
+              ) : (
+                <EyeIcon size={24} color="#94a3b8" />
+              )}
+            </TouchableOpacity>
+          </View>
+          {errors.confirmPassword && (
+            <Text className="text-red-500 text-sm mt-1 ml-2">
+              {errors.confirmPassword.message}
             </Text>
           )}
         </View>

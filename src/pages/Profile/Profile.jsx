@@ -27,7 +27,7 @@ const { width, height } = Dimensions.get('window');
 
 const Profile = () => {
   const { user, logout, changePassword, updateProfile } = useContext(AuthContext);
-  const { showAlert } = useAlert();
+  const { showAlert, showToast } = useAlert();
   const navigation = useNavigation();
   
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -38,7 +38,7 @@ const Profile = () => {
   const handleUpdateProfile = async (data) => {
     try {
       await updateProfile(data);
-      showAlert('Success', 'Profile updated successfully!', 'success');
+      showToast('Profile updated successfully!', 'success');
     } catch (error) {
       showAlert('Error', 'Failed to update profile.', 'error');
     }
@@ -56,9 +56,13 @@ const Profile = () => {
   const handleChangePassword = async (oldPassword, newPassword) => {
     try {
       await changePassword(oldPassword, newPassword);
-      showAlert('Success', 'Password changed successfully! Please login again.', 'success', () => {
-         logout();
-      });
+      showToast('Password changed successfully! Please login again.', 'success');
+      // Delay logout slightly to let user see the toast, or just logout immediately
+      // If we logout immediately, toast might disappear if it's part of the authorized context that gets unmounted?
+      // Actually Toast is in App.jsx which is above AuthNavigator? No, AuthProvider wraps AppNavigator.
+      // If user logs out, we switch to AuthStack.
+      // Let's keep the logout logic. 
+      setTimeout(() => logout(), 1000); // Small delay to show toast
     } catch (error) {
       showAlert('Error', error.message, 'error');
       throw error;

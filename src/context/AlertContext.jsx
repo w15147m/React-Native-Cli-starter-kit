@@ -11,6 +11,12 @@ export const AlertProvider = ({ children }) => {
     onConfirm: null
   });
 
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastConfig, setToastConfig] = useState({
+    message: '',
+    type: 'success'
+  });
+
   const showAlert = (title, message, type = 'info', onConfirm = null) => {
     setConfig({ title, message, type, onConfirm });
     setVisible(true);
@@ -20,8 +26,20 @@ export const AlertProvider = ({ children }) => {
     setVisible(false);
   };
 
+  const showToast = (message, type = 'success') => {
+    setToastConfig({ message, type });
+    setToastVisible(true);
+  };
+
+  const hideToast = () => {
+    setToastVisible(false);
+  };
+
   return (
-    <AlertContext.Provider value={{ showAlert, hideAlert, visible, config }}>
+    <AlertContext.Provider value={{ 
+      showAlert, hideAlert, visible, config,
+      showToast, hideToast, toastVisible, toastConfig 
+    }}>
       {children}
     </AlertContext.Provider>
   );
