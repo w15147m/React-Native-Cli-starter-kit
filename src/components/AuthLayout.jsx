@@ -23,26 +23,23 @@ const AuthLayout = ({ children, title, subtitle }) => {
         style={{ flex: 1 }}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
-        <ScrollView 
-          className="flex-1"
-          contentContainerStyle={{ flexGrow: 1 }}
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-        >
+        <View className="flex-1 relative">
           {/* Background Decorative Grid from Separate Component */}
           <AuthIconsGrid />
 
-          {/* Form Bottom Sheet Container */}
+          {/* Form Bottom Sheet Container - Fixed to bottom, size as content */}
           <View 
-            className="flex-1 bg-white rounded-t-[40px] -mt-20 px-8 pt-8 shadow-2xl pb-10 overflow-hidden"
+            className="bg-white rounded-t-[40px] px-8 pt-8 shadow-2xl pb-10 overflow-hidden"
             style={{ 
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
               shadowColor: '#000', 
               shadowOffset: { width: 0, height: -10 }, 
               shadowOpacity: 0.1, 
               shadowRadius: 20, 
-              elevation: 25,
-              minHeight: height * 0.6
+              elevation: 25
             }}
           >
             {/* Subtle Decorative Circles inside the card */}
@@ -50,12 +47,12 @@ const AuthLayout = ({ children, title, subtitle }) => {
             <View style={styles.cardCircle2} />
 
             {/* Handle bar */}
-            <View className="w-12 h-1.5 bg-slate-100 rounded-full self-center mb-8 z-10" />
+            <View className="w-12 h-1.5 bg-slate-100 rounded-full self-center mb-6 z-10" />
             
             <Text className="text-3xl font-bold text-slate-900 mb-2 z-10">
               {title}
             </Text>
-            <Text className="text-slate-500 text-lg mb-8 leading-6 z-10">
+            <Text className="text-slate-500 text-lg mb-6 leading-6 z-10">
               {subtitle}
             </Text>
 
@@ -71,7 +68,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
               </Text>
             </View>
           </View>
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </View>
   );

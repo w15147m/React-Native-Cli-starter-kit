@@ -33,26 +33,26 @@ const bgColors = ['#fbcfe8', '#e9d5ff', '#fed7aa', '#ccfbf1', '#dcfce7', '#d9f99
 const AuthIconsGrid = () => {
   return (
     <View 
-      style={{ height: height * 0.4 }} 
-      className="bg-slate-50 justify-center items-center overflow-hidden"
+      style={StyleSheet.absoluteFillObject} 
+      className="bg-slate-50 overflow-hidden"
     >
       {/* Decorative background circles */}
       <View style={styles.topCircle} />
       <View style={styles.bottomCircle} />
       <View style={styles.accentCircle} />
 
-      <View className="flex-row flex-wrap justify-center items-center px-2 z-10">
-        {icons.slice(0, 12).map((source, i) => (
+      <View className="flex-row flex-wrap justify-between items-center px-4 z-10 opacity-40">
+        {[...icons, ...icons].map((source, i) => (
           <View 
             key={i} 
-            className="w-[100px] h-[100px] m-1 rounded-[24px] items-center justify-center shadow-sm"
+            className="w-[85px] h-[85px] m-1 rounded-[24px] items-center justify-center"
             style={{ 
               backgroundColor: bgColors[i % bgColors.length]
             }} 
           >
             <Image 
               source={source} 
-              style={{ width: 70, height: 70 }} 
+              style={{ width: 60, height: 60 }} 
               resizeMode="contain"
               fadeDuration={0}
             />

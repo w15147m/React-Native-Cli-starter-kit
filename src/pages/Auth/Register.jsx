@@ -61,7 +61,7 @@ const Register = ({ navigation }) => {
       title="Get Started" 
       subtitle="Build your habits Unlock  potential."
     >
-      <View className="space-y-4">
+      <View className="space-y-3">
         {/* Name Field */}
         <View>
           <View className="relative">
@@ -250,7 +250,7 @@ const Register = ({ navigation }) => {
         </TouchableOpacity>
 
         {/* Login Link */}
-        <View className="flex-row justify-center mt-6">
+        <View className="flex-row justify-center mt-4">
           <Text className="text-slate-500 text-base">Already have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text className="text-[#6d28d9] font-bold text-base">Sign In</Text>
