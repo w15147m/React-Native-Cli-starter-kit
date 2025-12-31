@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
       if (!user?.user?.id) throw new Error('User not found');
 
       // 1. Update in Database (SQLite)
+      const authServices = require('../services/authServices');
       const updatedDbUser = await authServices.updateUser(user.user.id, updates);
 
       // 2. Update Local State & Storage

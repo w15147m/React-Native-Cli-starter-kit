@@ -39,7 +39,8 @@ const EditProfileModal = ({
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      showToast('Profile updated successfully!', 'success');
+      // Actually call the update function passed as prop
+      await onUpdateProfile({ ...data, profile_image: selectedImage });
       onClose();
     } catch (error) {
       console.log('Update profile failed', error);
