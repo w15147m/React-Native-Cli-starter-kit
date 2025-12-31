@@ -28,7 +28,8 @@ const ProfileDrawer = (props) => {
       'Logout',
       'Are you sure you want to log out?',
       'info',
-      () => logout()
+      () => logout(),
+      'Logout'
     );
   };
 
@@ -40,7 +41,8 @@ const ProfileDrawer = (props) => {
       () => {
         // Implementation for delete account would go here
         showToast('Delete account request sent', 'info');
-      }
+      },
+      'Delete'
     );
   };
 

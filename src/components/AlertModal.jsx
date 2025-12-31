@@ -106,7 +106,7 @@ const AlertModal = () => {
             className={`${getButtonColor()} w-full py-5 rounded-[24px] shadow-xl shadow-slate-200 z-10`}
           >
             <Text className="text-white text-center font-bold text-lg">
-              Got it
+              {config.confirmText || 'Got it'}
             </Text>
           </TouchableOpacity>
         </Animated.View>

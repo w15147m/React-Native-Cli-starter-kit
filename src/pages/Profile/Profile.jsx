@@ -46,7 +46,9 @@ const Profile = () => {
 
   const handleDeleteAccountConfirm = async () => {
     // Logic for actual deletion would be here or in context
-     showAlert('Info', 'Delete account request sent', 'info');
+    showAlert('Info', 'Delete account request sent', 'error', () => {
+      showToast('Processing your request...', 'info');
+    }, 'Confirm Delete');
   };
 
   const handleDeleteAccountPress = () => {

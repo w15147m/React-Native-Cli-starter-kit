@@ -8,7 +8,8 @@ export const AlertProvider = ({ children }) => {
     title: '',
     message: '',
     type: 'info', // 'success' | 'error' | 'info'
-    onConfirm: null
+    onConfirm: null,
+    confirmText: 'Got it'
   });
 
   const [toastVisible, setToastVisible] = useState(false);
@@ -17,8 +18,8 @@ export const AlertProvider = ({ children }) => {
     type: 'success'
   });
 
-  const showAlert = (title, message, type = 'info', onConfirm = null) => {
-    setConfig({ title, message, type, onConfirm });
+  const showAlert = (title, message, type = 'info', onConfirm = null, confirmText = 'Got it') => {
+    setConfig({ title, message, type, onConfirm, confirmText });
     setVisible(true);
   };
 
