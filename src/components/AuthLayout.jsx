@@ -15,7 +15,7 @@ const { height } = Dimensions.get('window');
 
 const AuthLayout = ({ children, title, subtitle }) => {
   return (
-    <View className="flex-1 bg-[#F8FAFC]">
+    <View className="flex-1 bg-[#F8FAFC] dark:bg-slate-950">
       <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
       
       <KeyboardAvoidingView
@@ -29,7 +29,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
 
           {/* Form Bottom Sheet Container - Fixed to bottom, size as content */}
           <View 
-            className="bg-white rounded-t-[40px] px-8 pt-8 shadow-2xl pb-10 overflow-hidden"
+            className="bg-white dark:bg-slate-900 rounded-t-[40px] px-8 pt-8 shadow-2xl pb-10 overflow-hidden"
             style={{ 
               position: 'absolute',
               bottom: 0,
@@ -43,16 +43,16 @@ const AuthLayout = ({ children, title, subtitle }) => {
             }}
           >
             {/* Subtle Decorative Circles inside the card */}
-            <View style={styles.cardCircle1} />
-            <View style={styles.cardCircle2} />
+            <View style={styles.cardCircle1} className="dark:opacity-5" />
+            <View style={styles.cardCircle2} className="dark:opacity-5" />
 
             {/* Handle bar */}
-            <View className="w-12 h-1.5 bg-slate-100 rounded-full self-center mb-6 z-10" />
+            <View className="w-12 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full self-center mb-6 z-10" />
             
-            <Text className="text-3xl font-bold text-slate-900 mb-2 z-10">
+            <Text className="text-3xl font-bold text-slate-900 dark:text-white mb-2 z-10">
               {title}
             </Text>
-            <Text className="text-slate-500 text-lg mb-6 leading-6 z-10">
+            <Text className="text-slate-500 dark:text-slate-400 text-lg mb-6 leading-6 z-10">
               {subtitle}
             </Text>
 
@@ -62,9 +62,9 @@ const AuthLayout = ({ children, title, subtitle }) => {
 
             {/* Footer Branding */}
             <View className="mt-auto items-center z-10">
-              <Text className="text-slate-400 text-xs text-center ">
-                <Text className="text-slate-900 font-bold">Terms of Use</Text> and {' '}
-                <Text className="text-slate-900 font-bold">Privacy Policy</Text>
+              <Text className="text-slate-400 dark:text-slate-500 text-xs text-center ">
+                <Text className="text-slate-900 dark:text-slate-200 font-bold">Terms of Use</Text> and {' '}
+                <Text className="text-slate-900 dark:text-slate-200 font-bold">Privacy Policy</Text>
               </Text>
             </View>
           </View>

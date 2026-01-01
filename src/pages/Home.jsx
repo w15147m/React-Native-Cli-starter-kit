@@ -33,7 +33,7 @@ const Home = () => {
         {/* Header */}
         <View className="flex-row justify-between items-center px-6 pt-4 mb-6">
           <View>
-            <Text className="text-slate-400 dark:text-slate-500 font-bold text-xs uppercase tracking-widest mb-1">
+            <Text className="text-slate-400 dark:text-slate-400 font-bold text-xs uppercase tracking-widest mb-1">
               Welcome Back
             </Text>
             <Text className="text-2xl font-black text-slate-900 dark:text-white">Dashboard</Text>

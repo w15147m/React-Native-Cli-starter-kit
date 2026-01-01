@@ -11,12 +11,15 @@ import { useAlert } from '../../../context/AlertContext';
 import BaseModal from '../../../common/components/BaseModal';
 import ImageUploader from '../../../common/components/ImageUploader';
 
+import { useTheme } from '../../../context/ThemeContext';
+
 const EditProfileModal = ({ 
   visible, 
   onClose, 
   user, 
   onUpdateProfile 
 }) => {
+  const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const { showToast } = useAlert();
@@ -68,33 +71,33 @@ const EditProfileModal = ({
 
         {/* Name Input */}
         <View>
-          <Text className="text-slate-500 font-bold mb-2 ml-1">Full Name</Text>
-          <View className={`flex-row items-center bg-slate-50 border ${errors.name ? 'border-rose-400 bg-rose-50' : 'border-slate-100'} rounded-2xl px-4 py-3.5`}>
-            <UserIcon size={20} color={errors.name ? '#f43f5e' : '#64748b'} />
+          <Text className="text-slate-500 dark:text-slate-400 font-bold mb-2 ml-1">Full Name</Text>
+          <View className={`flex-row items-center bg-slate-50 dark:bg-slate-800 border ${errors.name ? 'border-rose-400 dark:border-rose-500/50 bg-rose-50 dark:bg-rose-500/5' : 'border-slate-100 dark:border-slate-700'} rounded-2xl px-4 py-3.5`}>
+            <UserIcon size={20} color={errors.name ? '#f43f5e' : (isDarkMode ? '#94a3b8' : '#64748b')} />
             <Controller
               control={control}
               rules={{ required: 'Name is required' }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className="flex-1 ml-3 text-slate-900 font-medium text-base h-full"
+                  className="flex-1 ml-3 text-slate-900 dark:text-white font-medium text-base h-full"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
                   placeholder="Enter your full name"
-                  placeholderTextColor="#94a3b8"
+                  placeholderTextColor="#64748b"
                 />
               )}
               name="name"
             />
           </View>
-          {errors.name && <Text className="text-rose-500 text-xs font-bold mt-1 ml-1">{errors.name.message}</Text>}
+          {errors.name && <Text className="text-rose-500 dark:text-rose-400 text-xs font-bold mt-1 ml-1">{errors.name.message}</Text>}
         </View>
 
         {/* Email Input */}
         <View>
-          <Text className="text-slate-500 font-bold mb-2 ml-1">Email Address</Text>
-          <View className={`flex-row items-center bg-slate-50 border ${errors.email ? 'border-rose-400 bg-rose-50' : 'border-slate-100'} rounded-2xl px-4 py-3.5`}>
-            <EnvelopeIcon size={20} color={errors.email ? '#f43f5e' : '#64748b'} />
+          <Text className="text-slate-500 dark:text-slate-400 font-bold mb-2 ml-1">Email Address</Text>
+          <View className={`flex-row items-center bg-slate-50 dark:bg-slate-800 border ${errors.email ? 'border-rose-400 dark:border-rose-500/50 bg-rose-50 dark:bg-rose-500/5' : 'border-slate-100 dark:border-slate-700'} rounded-2xl px-4 py-3.5`}>
+            <EnvelopeIcon size={20} color={errors.email ? '#f43f5e' : (isDarkMode ? '#94a3b8' : '#64748b')} />
             <Controller
               control={control}
               rules={{ 
@@ -106,12 +109,12 @@ const EditProfileModal = ({
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className="flex-1 ml-3 text-slate-900 font-medium text-base h-full"
+                  className="flex-1 ml-3 text-slate-900 dark:text-white font-medium text-base h-full"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
                   placeholder="Enter your email"
-                  placeholderTextColor="#94a3b8"
+                  placeholderTextColor="#64748b"
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
@@ -119,13 +122,13 @@ const EditProfileModal = ({
               name="email"
             />
           </View>
-          {errors.email && <Text className="text-rose-500 text-xs font-bold mt-1 ml-1">{errors.email.message}</Text>}
+          {errors.email && <Text className="text-rose-500 dark:text-rose-400 text-xs font-bold mt-1 ml-1">{errors.email.message}</Text>}
         </View>
 
         <TouchableOpacity 
           onPress={handleSubmit(onSubmit)}
           disabled={loading}
-          className={`mt-4 p-4 rounded-2xl items-center shadow-lg shadow-indigo-200 ${loading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+          className={`mt-4 p-4 rounded-2xl items-center shadow-lg ${loading ? 'bg-indigo-400' : 'bg-indigo-600 shadow-indigo-200 dark:shadow-none'}`}
         >
           <Text className="text-white font-bold text-lg">
             {loading ? 'Saving...' : 'Save Changes'}

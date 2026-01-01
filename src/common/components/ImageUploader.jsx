@@ -42,7 +42,7 @@ const ImageUploader = ({
       style={{ width: size, height: size }}
     >
       <View 
-        className="w-full h-full rounded-full overflow-hidden bg-slate-100 border-4 border-white shadow-sm items-center justify-center"
+        className="w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 border-4 border-white dark:border-slate-800 shadow-sm items-center justify-center"
       >
         {imageUri ? (
           <Image 
@@ -51,11 +51,11 @@ const ImageUploader = ({
             resizeMode="cover"
           />
         ) : (
-          placeholder || <UserIcon size={size * 0.5} color="#cbd5e1" />
+          placeholder || <UserIcon size={size * 0.5} color="#64748b" />
         )}
       </View>
       
-      <View className="absolute bottom-0 right-0 bg-indigo-600 p-2 rounded-full border-[3px] border-white shadow-sm">
+      <View className="absolute bottom-0 right-0 bg-indigo-600 p-2 rounded-full border-[3px] border-white dark:border-slate-800 shadow-sm">
         <CameraIcon size={size * 0.18} color="white" />
       </View>
     </TouchableOpacity>

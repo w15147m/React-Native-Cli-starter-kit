@@ -80,11 +80,11 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 text-slate-900 p-4 pl-12 rounded-2xl border ${
-                    errors.name ? 'border-red-500' : 'border-slate-200'
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 pl-12 rounded-2xl border ${
+                    errors.name ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                   }`}
                   placeholder="Full Name"
-                  placeholderTextColor="#94a3b8"
+                  placeholderTextColor="#64748b"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -117,11 +117,11 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 text-slate-900 p-4 pl-12 rounded-2xl border ${
-                    errors.email ? 'border-red-500' : 'border-slate-200'
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 pl-12 rounded-2xl border ${
+                    errors.email ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                   }`}
                   placeholder="You@example.com"
-                  placeholderTextColor="#94a3b8"
+                  placeholderTextColor="#64748b"
                   keyboardType="email-address"
                   autoCapitalize="none"
                   onBlur={onBlur}
@@ -156,11 +156,11 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 text-slate-900 p-4 pl-12 pr-12 rounded-2xl border ${
-                    errors.password ? 'border-red-500' : 'border-slate-200'
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 pl-12 pr-12 rounded-2xl border ${
+                    errors.password ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                   }`}
                   placeholder="Create a password"
-                  placeholderTextColor="#94a3b8"
+                  placeholderTextColor="#64748b"
                   secureTextEntry={!showPassword}
                   onBlur={onBlur}
                   onChangeText={onChange}
@@ -173,7 +173,7 @@ const Register = ({ navigation }) => {
               className="absolute right-4 top-4"
             >
               {showPassword ? (
-                <EyeSlashIcon size={24} color="#6d28d9" />
+                <EyeSlashIcon size={24} color="#6366f1" />
               ) : (
                 <EyeIcon size={24} color="#94a3b8" />
               )}
@@ -202,11 +202,11 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 text-slate-900 p-4 pl-12 pr-12 rounded-2xl border ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-slate-200'
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 pl-12 pr-12 rounded-2xl border ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                   }`}
                   placeholder="Confirm password"
-                  placeholderTextColor="#94a3b8"
+                  placeholderTextColor="#64748b"
                   secureTextEntry={!showConfirmPassword}
                   onBlur={onBlur}
                   onChangeText={onChange}
@@ -219,7 +219,7 @@ const Register = ({ navigation }) => {
               className="absolute right-4 top-4"
             >
               {showConfirmPassword ? (
-                <EyeSlashIcon size={24} color="#6d28d9" />
+                <EyeSlashIcon size={24} color="#6366f1" />
               ) : (
                 <EyeIcon size={24} color="#94a3b8" />
               )}
@@ -237,7 +237,7 @@ const Register = ({ navigation }) => {
           onPress={handleSubmit(onSubmit)}
           disabled={loading}
           className={`py-4 rounded-2xl mt-2 ${
-            loading ? 'bg-indigo-400' : 'bg-[#6d28d9]'
+            loading ? 'bg-indigo-400' : 'bg-indigo-600'
           }`}
         >
           {loading ? (
@@ -251,9 +251,9 @@ const Register = ({ navigation }) => {
 
         {/* Login Link */}
         <View className="flex-row justify-center mt-4">
-          <Text className="text-slate-500 text-base">Already have an account? </Text>
+          <Text className="text-slate-500 dark:text-slate-400 text-base">Already have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text className="text-[#6d28d9] font-bold text-base">Sign In</Text>
+            <Text className="text-indigo-600 dark:text-indigo-400 font-bold text-base">Sign In</Text>
           </TouchableOpacity>
         </View>
       </View>

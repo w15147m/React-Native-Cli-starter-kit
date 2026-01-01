@@ -10,6 +10,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { LockClosedIcon, EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline';
 import BaseModal from '../../../common/components/BaseModal';
 
+import { useTheme } from '../../../context/ThemeContext';
+
 const PasswordInput = ({ 
   name, 
   placeholder, 
@@ -17,23 +19,24 @@ const PasswordInput = ({
   setShowPass, 
   rules,
   control,
-  errors
+  errors,
+  isDarkMode
 }) => (
   <View className="mb-4">
-    <Text className="text-slate-500 font-bold mb-2 ml-1">{placeholder}</Text>
-    <View className={`flex-row items-center bg-slate-50 border ${errors[name] ? 'border-rose-400 bg-rose-50' : 'border-slate-100'} rounded-2xl px-4 py-3.5`}>
-      <LockClosedIcon size={20} color={errors[name] ? '#f43f5e' : '#64748b'} />
+    <Text className="text-slate-500 dark:text-slate-400 font-bold mb-2 ml-1">{placeholder}</Text>
+    <View className={`flex-row items-center bg-slate-50 dark:bg-slate-800 border ${errors[name] ? 'border-rose-400 dark:border-rose-500/50 bg-rose-50 dark:bg-rose-500/5' : 'border-slate-100 dark:border-slate-700'} rounded-2xl px-4 py-3.5`}>
+      <LockClosedIcon size={20} color={errors[name] ? '#f43f5e' : (isDarkMode ? '#94a3b8' : '#64748b')} />
       <Controller
         control={control}
         rules={rules}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            className="flex-1 ml-3 text-slate-900 font-medium text-base h-full"
+            className="flex-1 ml-3 text-slate-900 dark:text-white font-medium text-base h-full"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             placeholder={placeholder}
-            placeholderTextColor="#94a3b8"
+            placeholderTextColor="#64748b"
             secureTextEntry={!showPass}
           />
         )}
@@ -41,17 +44,18 @@ const PasswordInput = ({
       />
       <TouchableOpacity onPress={() => setShowPass(!showPass)}>
         {showPass ? (
-          <EyeSlashIcon size={20} color="#64748b" />
+          <EyeSlashIcon size={20} color={isDarkMode ? '#94a3b8' : '#64748b'} />
         ) : (
-          <EyeIcon size={20} color="#64748b" />
+          <EyeIcon size={20} color={isDarkMode ? '#94a3b8' : '#64748b'} />
         )}
       </TouchableOpacity>
     </View>
-    {errors[name] && <Text className="text-rose-500 text-xs font-bold mt-1 ml-1">{errors[name].message}</Text>}
+    {errors[name] && <Text className="text-rose-500 dark:text-rose-400 text-xs font-bold mt-1 ml-1">{errors[name].message}</Text>}
   </View>
 );
 
 const ChangePasswordModal = ({ visible, onClose, onChangePassword }) => {
+  const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [showOldPass, setShowOldPass] = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
@@ -94,6 +98,7 @@ const ChangePasswordModal = ({ visible, onClose, onChangePassword }) => {
         rules={{ required: 'Current password is required' }}
         control={control}
         errors={errors}
+        isDarkMode={isDarkMode}
       />
 
       <PasswordInput 
@@ -107,6 +112,7 @@ const ChangePasswordModal = ({ visible, onClose, onChangePassword }) => {
         }}
         control={control}
         errors={errors}
+        isDarkMode={isDarkMode}
       />
 
       <PasswordInput 
@@ -120,12 +126,13 @@ const ChangePasswordModal = ({ visible, onClose, onChangePassword }) => {
         }}
         control={control}
         errors={errors}
+        isDarkMode={isDarkMode}
       />
 
       <TouchableOpacity 
         onPress={handleSubmit(onSubmit)}
         disabled={loading}
-        className={`mt-4 p-4 rounded-2xl items-center shadow-lg shadow-indigo-200 ${loading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+        className={`mt-4 p-4 rounded-2xl items-center shadow-lg ${loading ? 'bg-indigo-400' : 'bg-indigo-600 shadow-indigo-200 dark:shadow-none'}`}
       >
         <Text className="text-white font-bold text-lg">
           {loading ? 'Updating...' : 'Update Password'}

@@ -25,8 +25,11 @@ const dummyHabits = [
   { id: 6, title: 'Study or Working', description: 'Build a consistent study or work routine to stay productive and focused.' },
 ];
 
+import { useTheme } from '../../context/ThemeContext';
+
 const Habits = () => {
   const navigation = useNavigation();
+  const { isDarkMode } = useTheme();
   const [selectedHabitId, setSelectedHabitId] = useState(null);
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
@@ -43,21 +46,21 @@ const Habits = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F8FAFC]">
+    <SafeAreaView className="flex-1 bg-[#F8FAFC] dark:bg-slate-950">
       <View className="flex-1 relative">
         {/* Header - Home Style */}
         <View className="flex-row justify-between items-center px-6 pt-4 mb-6">
           <View>
-            <Text className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-1">
+            <Text className="text-slate-400 dark:text-slate-500 font-bold text-xs uppercase tracking-widest mb-1">
               Welcome Back
             </Text>
-            <Text className="text-2xl font-black text-slate-900">Habits</Text>
+            <Text className="text-2xl font-black text-slate-900 dark:text-white">Habits</Text>
           </View>
           <TouchableOpacity 
-            className="p-2 rounded-xl bg-white shadow-sm border border-slate-100"
+            className="p-2 rounded-xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800"
             onPress={() => navigation.openDrawer()}
           >
-            <Bars3Icon size={24} color="#1e293b" />
+            <Bars3Icon size={24} color={isDarkMode ? "#f8fafc" : "#1e293b"} />
           </TouchableOpacity>
         </View>
 
@@ -72,17 +75,17 @@ const Habits = () => {
               <TouchableOpacity
                 key={habit.id}
                 onPress={() => setSelectedHabitId(habit.id)}
-                className={`bg-white p-4 rounded-2xl border ${selectedHabitId === habit.id ? 'border-indigo-600 bg-indigo-50/10' : 'border-slate-100'} shadow-sm flex-row items-center justify-between`}
+                className={`bg-white dark:bg-slate-900 p-4 rounded-2xl border ${selectedHabitId === habit.id ? (isDarkMode ? 'border-indigo-500 bg-indigo-500/10' : 'border-indigo-600 bg-indigo-50/10') : (isDarkMode ? 'border-slate-800' : 'border-slate-100')} shadow-sm flex-row items-center justify-between`}
               >
                 <View className="flex-1 pr-4">
-                  <Text className="text-slate-900 font-bold text-base mb-1">{habit.title}</Text>
-                  <Text className="text-slate-500 text-sm leading-5">{habit.description}</Text>
+                  <Text className="text-slate-900 dark:text-white font-bold text-base mb-1">{habit.title}</Text>
+                  <Text className="text-slate-500 dark:text-slate-400 text-sm leading-5">{habit.description}</Text>
                 </View>
                 <View>
                   {selectedHabitId === habit.id ? (
-                    <CheckCircleIconSolid size={28} color="#4f46e5" />
+                    <CheckCircleIconSolid size={28} color={isDarkMode ? "#818cf8" : "#4f46e5"} />
                   ) : (
-                    <View className="w-7 h-7 rounded-full border-2 border-slate-200" />
+                    <View className="w-7 h-7 rounded-full border-2 border-slate-200 dark:border-slate-700" />
                   )}
                 </View>
               </TouchableOpacity>

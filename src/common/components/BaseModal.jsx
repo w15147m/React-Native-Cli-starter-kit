@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { 
   View, 
   Text, 
   Modal, 
   TouchableOpacity, 
-  KeyboardAvoidingView, 
-  Platform,
   TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  Animated,
-  PanResponder,
-  Dimensions
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions,
+  StyleSheet
 } from 'react-native';
 import { XMarkIcon } from 'react-native-heroicons/outline';
+import { useTheme } from '../../context/ThemeContext';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -21,103 +19,66 @@ const BaseModal = ({
   visible, 
   onClose, 
   title, 
-  children 
+  children,
+  footer,
+  maxWidth = 500
 }) => {
-  const panY = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (visible) {
-      panY.setValue(0);
-    }
-  }, [visible]);
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        return gestureState.dy > 5;
-      },
-      onPanResponderMove: (_, gestureState) => {
-        if (gestureState.dy > 0) {
-          panY.setValue(gestureState.dy);
-        }
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dy > 120 || gestureState.vy > 0.5) {
-          Animated.timing(panY, {
-            toValue: SCREEN_HEIGHT,
-            duration: 200,
-            useNativeDriver: true,
-          }).start(onClose);
-        } else {
-          Animated.spring(panY, {
-            toValue: 0,
-            friction: 8,
-            tension: 40,
-            useNativeDriver: true,
-          }).start();
-        }
-      },
-    })
-  ).current;
+  const { isDarkMode } = useTheme();
 
   return (
     <Modal
-      animationType="slide"
-      transparent={true}
       visible={visible}
+      transparent
+      animationType="fade"
       onRequestClose={onClose}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 bg-black/50">
-          <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            className="flex-1"
-          >
-            <Animated.View 
-              style={{ 
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                maxHeight: '90%',
-                transform: [{ translateY: panY }]
-              }}
-              className="bg-white rounded-t-[40px] shadow-2xl overflow-hidden px-6 pt-2 pb-10"
+      <TouchableWithoutFeedback onPress={onClose}>
+        <View style={styles.overlay}>
+          <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              className="w-full px-4"
+              style={{ maxWidth }}
             >
-              {/* Drag Handle */}
-              <View 
-                {...panResponder.panHandlers}
-                className="w-full items-center py-4"
-              >
-                <View className="w-12 h-1.5 bg-slate-100 rounded-full" />
-              </View>
-              
-              {/* Header - Fixed at top of modal */}
-              <View className="flex-row justify-between items-center mb-6">
-                <Text className="text-2xl font-black text-slate-900">{title}</Text>
-                <TouchableOpacity 
-                  onPress={onClose}
-                  className="p-2 rounded-full bg-slate-100"
-                >
-                  <XMarkIcon size={24} color="#64748b" />
-                </TouchableOpacity>
-              </View>
+              <View className="bg-white dark:bg-slate-900 rounded-[32px] overflow-hidden shadow-2xl border border-slate-50 dark:border-slate-800">
+                {/* Header */}
+                <View className="px-6 py-5 border-b border-slate-50 dark:border-slate-800 flex-row items-center justify-between">
+                  <Text className="text-xl font-black text-slate-900 dark:text-white">{title}</Text>
+                  <TouchableOpacity 
+                    onPress={onClose}
+                    className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-full"
+                  >
+                    <XMarkIcon size={20} color={isDarkMode ? "#94a3b8" : "#64748b"} />
+                  </TouchableOpacity>
+                </View>
 
-              {/* Content Container */}
-              <ScrollView 
-                showsVerticalScrollIndicator={false}
-                bounces={false}
-                contentContainerStyle={{ paddingBottom: 20 }}
-              >
-                {children}
-              </ScrollView>
-            </Animated.View>
-          </KeyboardAvoidingView>
+                {/* Content */}
+                <View className="p-6">
+                  {children}
+                </View>
+
+                {/* Optional Footer */}
+                {footer && (
+                  <View className="px-6 pb-6 pt-2">
+                    {footer}
+                  </View>
+                )}
+              </View>
+            </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(15, 23, 42, 0.6)', // Slate-900 with opacity
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default BaseModal;
