@@ -15,6 +15,7 @@ import { EyeIcon, EyeSlashIcon, UserIcon, EnvelopeIcon, LockClosedIcon } from 'r
 
 const Register = ({ navigation }) => {
   const { login } = useContext(AuthContext);
+  const { theme, isDarkMode } = useTheme();
   const { showAlert, showToast } = useAlert();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -46,8 +47,6 @@ const Register = ({ navigation }) => {
       });
       
       showToast('Registration successful! Please login.', 'success');
-      // Navigate to Login after a short delay or immediately
-      // Since it's a success toast, immediate navigation is fine as Toast is global
       navigation.navigate('Login');
     } catch (error) {
       showAlert('Error', error.message || 'Registration failed', 'error');
@@ -59,14 +58,14 @@ const Register = ({ navigation }) => {
   return (
     <AuthLayout 
       title="Get Started" 
-      subtitle="Build your habits Unlock  potential."
+      subtitle="Build your habits, unlock your potential."
     >
       <View className="space-y-3">
         {/* Name Field */}
         <View>
           <View className="relative">
             <View className="absolute left-4 top-4 z-10">
-              <UserIcon size={24} color="#94a3b8" />
+              <UserIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
               control={control}
@@ -85,6 +84,7 @@ const Register = ({ navigation }) => {
                   }`}
                   placeholder="Full Name"
                   placeholderTextColor="#64748b"
+                  keyboardAppearance={isDarkMode ? 'dark' : 'light'}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -103,7 +103,7 @@ const Register = ({ navigation }) => {
         <View>
           <View className="relative">
             <View className="absolute left-4 top-4 z-10">
-              <EnvelopeIcon size={24} color="#94a3b8" />
+              <EnvelopeIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
               control={control}
@@ -124,6 +124,7 @@ const Register = ({ navigation }) => {
                   placeholderTextColor="#64748b"
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  keyboardAppearance={isDarkMode ? 'dark' : 'light'}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -142,7 +143,7 @@ const Register = ({ navigation }) => {
         <View>
           <View className="relative">
             <View className="absolute left-4 top-4 z-10">
-              <LockClosedIcon size={24} color="#94a3b8" />
+              <LockClosedIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
               control={control}
@@ -162,6 +163,7 @@ const Register = ({ navigation }) => {
                   placeholder="Create a password"
                   placeholderTextColor="#64748b"
                   secureTextEntry={!showPassword}
+                  keyboardAppearance={isDarkMode ? 'dark' : 'light'}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -175,7 +177,7 @@ const Register = ({ navigation }) => {
               {showPassword ? (
                 <EyeSlashIcon size={24} color="#6366f1" />
               ) : (
-                <EyeIcon size={24} color="#94a3b8" />
+                <EyeIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
               )}
             </TouchableOpacity>
           </View>
@@ -190,7 +192,7 @@ const Register = ({ navigation }) => {
         <View>
           <View className="relative">
             <View className="absolute left-4 top-4 z-10">
-              <LockClosedIcon size={24} color="#94a3b8" />
+              <LockClosedIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
               control={control}
@@ -208,6 +210,7 @@ const Register = ({ navigation }) => {
                   placeholder="Confirm password"
                   placeholderTextColor="#64748b"
                   secureTextEntry={!showConfirmPassword}
+                  keyboardAppearance={isDarkMode ? 'dark' : 'light'}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -221,7 +224,7 @@ const Register = ({ navigation }) => {
               {showConfirmPassword ? (
                 <EyeSlashIcon size={24} color="#6366f1" />
               ) : (
-                <EyeIcon size={24} color="#94a3b8" />
+                <EyeIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
               )}
             </TouchableOpacity>
           </View>

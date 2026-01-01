@@ -16,7 +16,6 @@ const { height } = Dimensions.get('window');
 const AuthLayout = ({ children, title, subtitle }) => {
   return (
     <View className="flex-1 bg-[#F8FAFC] dark:bg-slate-950">
-      <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
       
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}

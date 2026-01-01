@@ -11,12 +11,13 @@ import { AuthContext } from '../../context/AuthContext';
 import { useAlert } from '../../context/AlertContext';
 import { login as loginService } from '../../services/authServices';
 import AuthLayout from '../../components/AuthLayout';
-import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline';
-import { EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/solid';
+import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/outline';
+import { useTheme } from '../../context/ThemeContext';
 
 const Login = ({ navigation }) => {
   const { login } = useContext(AuthContext);
   const { showToast } = useAlert();
+  const { theme, isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
@@ -54,7 +55,7 @@ const Login = ({ navigation }) => {
       <View className="space-y-4">
         <View className="relative">
           <View className="absolute left-4 top-4 z-10">
-            <EnvelopeIcon size={24} color="#94a3b8" />
+            <EnvelopeIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
           </View>
           <Controller
             control={control}
@@ -75,6 +76,7 @@ const Login = ({ navigation }) => {
                 placeholderTextColor="#64748b"
                 keyboardType="email-address"
                 autoCapitalize="none"
+                keyboardAppearance={isDarkMode ? 'dark' : 'light'}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -92,7 +94,7 @@ const Login = ({ navigation }) => {
         <View>
           <View className="relative">
             <View className="absolute left-4 top-4 z-10">
-              <LockClosedIcon size={24} color="#94a3b8" />
+              <LockClosedIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
               control={control}
@@ -112,6 +114,7 @@ const Login = ({ navigation }) => {
                   placeholder="Enter your password"
                   placeholderTextColor="#64748b"
                   secureTextEntry={!showPassword}
+                  keyboardAppearance={isDarkMode ? 'dark' : 'light'}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -125,7 +128,7 @@ const Login = ({ navigation }) => {
               {showPassword ? (
                 <EyeSlashIcon size={24} color="#6366f1" />
               ) : (
-                <EyeIcon size={24} color="#94a3b8" />
+                <EyeIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
               )}
             </TouchableOpacity>
           </View>

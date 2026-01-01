@@ -80,21 +80,21 @@ const AlertModal = () => {
               transform: [{ scale: scaleAnim }]
             }
           ]}
-          className="bg-white rounded-[40px] p-8 items-center shadow-2xl border border-slate-50"
+          className="bg-white dark:bg-slate-900 rounded-[40px] p-8 items-center shadow-2xl border border-slate-50 dark:border-slate-800"
         >
           {/* Decorative Circles inside Alert */}
-          <View style={styles.circle1} />
-          <View style={styles.circle2} />
+          <View style={styles.circle1} className="dark:bg-slate-800 dark:opacity-10" />
+          <View style={styles.circle2} className="dark:bg-slate-800 dark:opacity-10" />
 
           <View className="mb-6 z-10">
             {getIcon()}
           </View>
           
-          <Text className="text-2xl font-black text-slate-900 mb-2 text-center z-10">
+          <Text className="text-2xl font-black text-slate-900 dark:text-white mb-2 text-center z-10">
             {config.title}
           </Text>
           
-          <Text className="text-slate-500 text-center mb-10 leading-6 font-medium z-10">
+          <Text className="text-slate-500 dark:text-slate-400 text-center mb-10 leading-6 font-medium z-10">
             {config.message}
           </Text>
 
@@ -103,7 +103,7 @@ const AlertModal = () => {
               hideAlert();
               if (config.onConfirm) config.onConfirm();
             }}
-            className={`${getButtonColor()} w-full py-5 rounded-[24px] shadow-xl shadow-slate-200 z-10`}
+            className={`${getButtonColor()} w-full py-5 rounded-[24px] shadow-xl shadow-slate-200 dark:shadow-none z-10`}
           >
             <Text className="text-white text-center font-bold text-lg">
               {config.confirmText || 'Got it'}

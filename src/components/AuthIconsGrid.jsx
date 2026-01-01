@@ -34,14 +34,14 @@ const AuthIconsGrid = () => {
   return (
     <View 
       style={StyleSheet.absoluteFillObject} 
-      className="bg-slate-50 overflow-hidden"
+      className="bg-slate-50 dark:bg-slate-950 overflow-hidden"
     >
       {/* Decorative background circles */}
-      <View style={styles.topCircle} />
-      <View style={styles.bottomCircle} />
-      <View style={styles.accentCircle} />
+      <View style={styles.topCircle} className="dark:bg-slate-800 dark:opacity-10" />
+      <View style={styles.bottomCircle} className="dark:bg-indigo-900/10 dark:opacity-10" />
+      <View style={styles.accentCircle} className="dark:bg-slate-800 dark:opacity-5" />
 
-      <View className="flex-row flex-wrap justify-between items-center px-4 z-10 opacity-40">
+      <View className="flex-row flex-wrap justify-between items-center px-4 z-10 opacity-40 dark:opacity-5">
         {[...icons, ...icons].map((source, i) => (
           <View 
             key={i} 
@@ -61,7 +61,7 @@ const AuthIconsGrid = () => {
       </View>
       
       {/* Subtle overlay */}
-      <View className="absolute inset-0 bg-slate-50/5" />
+      <View className="absolute inset-0 bg-slate-50/5 dark:bg-black/20" />
     </View>
   );
 };

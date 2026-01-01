@@ -54,9 +54,9 @@ const Toast = () => {
         { transform: [{ translateY: slideAnim }] }
       ]}
     >
-      <View className="flex-row items-center bg-white px-4 py-3 rounded-full shadow-lg border border-slate-100">
+      <View className="flex-row items-center bg-white dark:bg-slate-900 px-4 py-3 rounded-full shadow-lg border border-slate-100 dark:border-slate-800">
         {getIcon()}
-        <Text className="ml-3 font-semibold text-slate-800 text-sm">
+        <Text className="ml-3 font-semibold text-slate-800 dark:text-white text-sm">
           {toastConfig.message}
         </Text>
       </View>
