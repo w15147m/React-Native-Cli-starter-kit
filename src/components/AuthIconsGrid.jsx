@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Image, Dimensions, StyleSheet } from 'react-native';
 
+import { useTheme } from '../context/ThemeContext';
+
 const { height } = Dimensions.get('window');
 
 // Requiring icons with cleaned filenames (no spaces)
@@ -31,23 +33,25 @@ const icons = [
 const bgColors = ['#fbcfe8', '#e9d5ff', '#fed7aa', '#ccfbf1', '#dcfce7', '#d9f99d'];
 
 const AuthIconsGrid = () => {
+  const { isDarkMode } = useTheme();
+
   return (
     <View 
       style={StyleSheet.absoluteFillObject} 
       className="bg-slate-50 dark:bg-slate-950 overflow-hidden"
     >
       {/* Decorative background circles */}
-      <View style={styles.topCircle} className="dark:bg-slate-800 dark:opacity-10" />
-      <View style={styles.bottomCircle} className="dark:bg-indigo-900/10 dark:opacity-10" />
-      <View style={styles.accentCircle} className="dark:bg-slate-800 dark:opacity-5" />
+      <View style={styles.topCircle} className="dark:bg-indigo-500/10 dark:opacity-20" />
+      <View style={styles.bottomCircle} className="dark:bg-indigo-500/10 dark:opacity-20" />
+      <View style={styles.accentCircle} className="dark:bg-indigo-500/10 dark:opacity-10" />
 
-      <View className="flex-row flex-wrap justify-between items-center px-4 z-10 opacity-40 dark:opacity-5">
+      <View className="flex-row flex-wrap justify-between items-center px-4 z-10 opacity-40 dark:opacity-20">
         {[...icons, ...icons].map((source, i) => (
           <View 
             key={i} 
             className="w-[85px] h-[85px] m-1 rounded-[24px] items-center justify-center"
             style={{ 
-              backgroundColor: bgColors[i % bgColors.length]
+              backgroundColor: isDarkMode ? `${bgColors[i % bgColors.length]}15` : bgColors[i % bgColors.length]
             }} 
           >
             <Image 
@@ -55,13 +59,14 @@ const AuthIconsGrid = () => {
               style={{ width: 60, height: 60 }} 
               resizeMode="contain"
               fadeDuration={0}
+              className={isDarkMode ? 'opacity-80' : 'opacity-100'}
             />
           </View>
         ))}
       </View>
       
       {/* Subtle overlay */}
-      <View className="absolute inset-0 bg-slate-50/5 dark:bg-black/20" />
+      <View className="absolute inset-0 bg-slate-50/5 dark:bg-black/40" />
     </View>
   );
 };

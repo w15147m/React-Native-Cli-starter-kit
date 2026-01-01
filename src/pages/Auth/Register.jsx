@@ -12,6 +12,7 @@ import { useAlert } from '../../context/AlertContext';
 import { register as registerService } from '../../services/authServices';
 import AuthLayout from '../../components/AuthLayout';
 import { EyeIcon, EyeSlashIcon, UserIcon, EnvelopeIcon, LockClosedIcon } from 'react-native-heroicons/outline';
+import { useTheme } from '../../context/ThemeContext';
 
 const Register = ({ navigation }) => {
   const { login } = useContext(AuthContext);
