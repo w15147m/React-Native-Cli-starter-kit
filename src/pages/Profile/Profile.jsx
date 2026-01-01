@@ -48,17 +48,20 @@ const Profile = () => {
   };
 
   const handleDeleteAccountConfirm = async () => {
-    try {
-      // Actually delete the user
-      await deleteUser();
-      
-      // Show confirmation alert with toast after
-      showAlert('Info', 'Delete account request sent', 'error', () => {
-        showToast('Account deleted successfully', 'success');
-      }, 'Confirm Delete');
-    } catch (error) {
-      showToast(error.message || 'Failed to delete account', 'error');
-    }
+    showAlert(
+      'Warning', 
+      'Are you sure you want to permanently delete your account?', 
+      'error', 
+      async () => {
+        try {
+          await deleteUser();
+          showToast('Account deleted successfully', 'success');
+        } catch (error) {
+          showToast(error.message || 'Failed to delete account', 'error');
+        }
+      }, 
+      'Confirm Delete'
+    );
   };
 
   const handleDeleteAccountPress = () => {
