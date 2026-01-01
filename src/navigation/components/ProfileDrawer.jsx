@@ -53,57 +53,63 @@ const ProfileDrawer = (props) => {
   return (
     <View style={{ flex: 1 }} className="bg-white">
       <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 0 }}>
-        {/* Drawer Header / User Info */}
-        <View className="bg-indigo-600 px-6 py-8 pb-10 rounded-b-[40px] mb-6 shadow-xl">
-          <View className="flex-row items-center">
-            <View className="w-16 h-16 bg-white/20 rounded-[22px] items-center justify-center border border-white/30 overflow-hidden">
-              {user?.user?.profile_image ? (
-                <Image 
-                  source={{ uri: user.user.profile_image }} 
-                  className="w-full h-full"
-                  resizeMode="cover"
-                />
-              ) : (
-                <UserIcon size={32} color="white" />
-              )}
-            </View>
-            <View className="flex-1 ml-4">
-              <Text className="text-xl font-bold text-white mb-0.5" numberOfLines={1}>
-                {user?.user?.name || 'User Name'}
-              </Text>
-              <Text className="text-indigo-100 font-medium text-xs" numberOfLines={1}>
-                {user?.user?.email || 'user@example.com'}
-              </Text>
-            </View>
+        {/* Flat Header Section */}
+        <View className="px-6 pt-8 pb- border-b border-slate-50 flex-row items-center">
+          <View className="w-14 h-14 bg-slate-50 rounded-2xl items-center justify-center border border-slate-100 overflow-hidden mr-4">
+            {user?.user?.profile_image ? (
+              <Image 
+                source={{ uri: user.user.profile_image }} 
+                className="w-full h-full"
+                resizeMode="cover"
+              />
+            ) : (
+              <UserIcon size={24} color="#6366f1" />
+            )}
+          </View>
+          <View className="flex-1">
+            <Text className="text-xl font-black text-slate-900 leading-tight">
+              {user?.user?.name || 'User Name'}
+            </Text>
+            <Text className="text-slate-400 font-bold text-xs mt-0.5">
+              {user?.user?.email || 'user@example.com'}
+            </Text>
           </View>
         </View>
 
-        {/* Custom Drawer Items */}
-        <View className="px-4 space-y-2">
+        {/* Flat Menu Items */}
+        <View className="mt-6 px-2">
           <TouchableOpacity 
             onPress={handleEditProfile}
-            className="flex-row items-center p-4 rounded-2xl bg-indigo-50 border border-indigo-100"
+            activeOpacity={0.5}
+            className="flex-row items-center px-4 py-4 rounded-2xl"
           >
-            <UserIcon size={22} color="#6366f1" />
-            <Text className="flex-1 text-slate-900 font-bold ml-4">Profile</Text>
-            <ChevronRightIcon size={18} color="#6366f1" />
+            <View className="w-9 h-9 bg-indigo-50 rounded-xl items-center justify-center mr-4">
+              <UserIcon size={18} color="#6366f1" />
+            </View>
+            <Text className="flex-1 text-slate-700 font-bold text-base">My Profile</Text>
+            <ChevronRightIcon size={16} color="#94a3b8" />
           </TouchableOpacity>
         </View>
       </DrawerContentScrollView>
 
-      {/* Footer / Logout */}
-      <View className="p-6 border-t border-slate-100">
+      {/* Minimal Footer Logout */}
+      <View className="px-6 py-6 border-t border-slate-50">
         <TouchableOpacity 
           onPress={handleLogout}
-          className="flex-row items-center p-4 rounded-2xl bg-slate-900 shadow-lg"
+          activeOpacity={0.5}
+          className="flex-row items-center py-2"
         >
-          <ArrowLeftOnRectangleIcon size={22} color="white" />
-          <Text className="text-white font-bold ml-4">Logout</Text>
+          <View className="w-9 h-9 bg-rose-50 rounded-xl items-center justify-center mr-4">
+            <ArrowLeftOnRectangleIcon size={18} color="#f43f5e" />
+          </View>
+          <Text className="text-rose-600 font-bold text-base">Logout Account</Text>
         </TouchableOpacity>
         
-        <Text className="text-center text-slate-300 text-[10px] mt-4 font-bold uppercase tracking-widest">
-          Version 1.0.0
-        </Text>
+        <View className="mt-6">
+          <Text className="text-slate-300 text-[10px] font-black uppercase tracking-[2px] text-center">
+            VERSION 1.0.2 • PREMIUM
+          </Text>
+        </View>
       </View>
     </View>
   );
