@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       
       // Import and call the delete user service
       const authServices = require('../services/authServices');
-      await authServices.deleteUser(user.user.id);
+      await authServices.deleteUser(user.user.id, user.user.profile_image);
       
       // Logout after deletion
       await logout();

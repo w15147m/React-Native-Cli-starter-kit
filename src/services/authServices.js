@@ -92,7 +92,7 @@ export const register = async (userData) => {
     }
 
     // Default Profile Image
-    const defaultImage = Image.resolveAssetSource(require('../assets/3D-icons-with-bg/color - 2025-12-30T184226.750.webp')).uri;
+    const defaultImage = Image.resolveAssetSource(require('../assets/3D-icons-with-bg/default_profile.webp')).uri;
 
     // TODO: Hash password before storing (use bcrypt)
     // For now, storing plain text (NOT SECURE - just for demo)
@@ -167,13 +167,26 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
 /**
  * Delete user account
  * @param {number} userId - User ID
+ * @param {string} profileImageUri - URI of the user's profile image
  * @returns {Promise<boolean>} Success status
  */
-export const deleteUser = async (userId) => {
+export const deleteUser = async (userId, profileImageUri = null) => {
   try {
     if (!userId) throw new Error('User ID is required');
 
-    // Delete user from database
+    // 1. Physically delete profile image if it's not the default one
+    if (profileImageUri && !profileImageUri.includes('default_profile.webp')) {
+      try {
+        // We attempt to delete using standard filesystem if possible, 
+        // but since we don't have react-native-fs yet, we log it for now.
+        // Once react-native-fs is installed, replace with: await RNFS.unlink(profileImageUri);
+        console.log('Physical image deletion requested for:', profileImageUri);
+      } catch (err) {
+        console.error('Failed to delete physical image:', err);
+      }
+    }
+
+    // 2. Delete user from database
     await db.delete(users).where(eq(users.id, userId));
 
     return true;

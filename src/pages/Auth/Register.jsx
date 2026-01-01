@@ -15,8 +15,8 @@ import { EyeIcon, EyeSlashIcon, UserIcon, EnvelopeIcon, LockClosedIcon } from 'r
 import { useTheme } from '../../context/ThemeContext';
 
 const Register = ({ navigation }) => {
+  const { isDarkMode } = useTheme();
   const { login } = useContext(AuthContext);
-  const { theme, isDarkMode } = useTheme();
   const { showAlert, showToast } = useAlert();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
