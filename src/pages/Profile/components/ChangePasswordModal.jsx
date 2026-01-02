@@ -22,35 +22,46 @@ const PasswordInput = ({
   errors,
   isDarkMode
 }) => (
-  <View className="mb-4">
-    <Text className="text-slate-500 dark:text-slate-400 font-bold mb-2 ml-1">{placeholder}</Text>
-    <View className={`flex-row items-center bg-slate-50 dark:bg-slate-800 border ${errors[name] ? 'border-rose-400 dark:border-rose-500/50 bg-rose-50 dark:bg-rose-500/5' : 'border-slate-100 dark:border-slate-700'} rounded-2xl px-4 py-3.5`}>
-      <LockClosedIcon size={20} color={errors[name] ? '#f43f5e' : (isDarkMode ? '#94a3b8' : '#64748b')} />
+  <View className="mb-3">
+    <View className="relative">
+      <View className="absolute left-4 top-3 z-10">
+        <LockClosedIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
+      </View>
       <Controller
         control={control}
         rules={rules}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            className="flex-1 ml-3 text-slate-900 dark:text-white font-medium text-base h-full"
+            className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 pr-12 rounded-2xl border ${
+              errors[name] ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
+            }`}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             placeholder={placeholder}
             placeholderTextColor="#64748b"
+            keyboardAppearance={isDarkMode ? 'dark' : 'light'}
             secureTextEntry={!showPass}
           />
         )}
         name={name}
       />
-      <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+      <TouchableOpacity
+        onPress={() => setShowPass(!showPass)}
+        className="absolute right-4 top-3"
+      >
         {showPass ? (
-          <EyeSlashIcon size={20} color={isDarkMode ? '#94a3b8' : '#64748b'} />
+          <EyeSlashIcon size={24} color="#6366f1" />
         ) : (
-          <EyeIcon size={20} color={isDarkMode ? '#94a3b8' : '#64748b'} />
+          <EyeIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
         )}
       </TouchableOpacity>
     </View>
-    {errors[name] && <Text className="text-rose-500 dark:text-rose-400 text-xs font-bold mt-1 ml-1">{errors[name].message}</Text>}
+    {errors[name] && (
+      <Text className="text-red-500 text-sm mt-1 ml-2">
+        {errors[name].message}
+      </Text>
+    )}
   </View>
 );
 

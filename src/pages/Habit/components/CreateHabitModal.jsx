@@ -23,23 +23,25 @@ const FormInput = ({
   multiline = false,
   isDarkMode
 }) => (
-  <View className="mb-4">
-    <Text className="text-slate-500 dark:text-slate-400 font-bold mb-2 ml-1">{placeholder}</Text>
-    <View className={`flex-row items-start bg-slate-50 dark:bg-slate-800 border ${errors[name] ? 'border-rose-400 dark:border-rose-500/50 bg-rose-50 dark:bg-rose-500/5' : 'border-slate-100 dark:border-slate-700'} rounded-2xl px-4 py-3.5`}>
-      <View className="mt-1">
-        <Icon size={20} color={errors[name] ? '#f43f5e' : (isDarkMode ? '#94a3b8' : '#64748b')} />
+  <View className="mb-3">
+    <View className="relative">
+      <View className="absolute left-4 top-3 z-10">
+        <Icon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
       </View>
       <Controller
         control={control}
         rules={rules}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            className={`flex-1 ml-3 text-slate-900 dark:text-white font-medium text-base ${multiline ? 'h-24' : 'h-full'}`}
+            className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 rounded-2xl border ${
+              errors[name] ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
+            } ${multiline ? 'h-24' : ''}`}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             placeholder={placeholder}
             placeholderTextColor="#64748b"
+            keyboardAppearance={isDarkMode ? 'dark' : 'light'}
             multiline={multiline}
             textAlignVertical={multiline ? 'top' : 'center'}
           />
@@ -47,7 +49,11 @@ const FormInput = ({
         name={name}
       />
     </View>
-    {errors[name] && <Text className="text-rose-500 dark:text-rose-400 text-xs font-bold mt-1 ml-1">{errors[name].message}</Text>}
+    {errors[name] && (
+      <Text className="text-red-500 text-sm mt-1 ml-2">
+        {errors[name].message}
+      </Text>
+    )}
   </View>
 );
 

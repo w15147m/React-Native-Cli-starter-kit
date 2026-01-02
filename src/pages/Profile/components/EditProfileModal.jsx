@@ -70,34 +70,43 @@ const EditProfileModal = ({
         </View>
 
         {/* Name Input */}
-        <View>
-          <Text className="text-slate-500 dark:text-slate-400 font-bold mb-2 ml-1">Full Name</Text>
-          <View className={`flex-row items-center bg-slate-50 dark:bg-slate-800 border ${errors.name ? 'border-rose-400 dark:border-rose-500/50 bg-rose-50 dark:bg-rose-500/5' : 'border-slate-100 dark:border-slate-700'} rounded-2xl px-4 py-3.5`}>
-            <UserIcon size={20} color={errors.name ? '#f43f5e' : (isDarkMode ? '#94a3b8' : '#64748b')} />
+        <View className="mb-3">
+          <View className="relative">
+            <View className="absolute left-4 top-3 z-10">
+              <UserIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
+            </View>
             <Controller
               control={control}
               rules={{ required: 'Name is required' }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className="flex-1 ml-3 text-slate-900 dark:text-white font-medium text-base h-full"
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 rounded-2xl border ${
+                    errors.name ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
+                  }`}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  placeholder="Enter your full name"
+                  placeholder="Full Name"
                   placeholderTextColor="#64748b"
+                  keyboardAppearance={isDarkMode ? 'dark' : 'light'}
                 />
               )}
               name="name"
             />
           </View>
-          {errors.name && <Text className="text-rose-500 dark:text-rose-400 text-xs font-bold mt-1 ml-1">{errors.name.message}</Text>}
+          {errors.name && (
+            <Text className="text-red-500 text-sm mt-1 ml-2">
+              {errors.name.message}
+            </Text>
+          )}
         </View>
 
         {/* Email Input */}
-        <View>
-          <Text className="text-slate-500 dark:text-slate-400 font-bold mb-2 ml-1">Email Address</Text>
-          <View className={`flex-row items-center bg-slate-50 dark:bg-slate-800 border ${errors.email ? 'border-rose-400 dark:border-rose-500/50 bg-rose-50 dark:bg-rose-500/5' : 'border-slate-100 dark:border-slate-700'} rounded-2xl px-4 py-3.5`}>
-            <EnvelopeIcon size={20} color={errors.email ? '#f43f5e' : (isDarkMode ? '#94a3b8' : '#64748b')} />
+        <View className="mb-3">
+          <View className="relative">
+            <View className="absolute left-4 top-3 z-10">
+              <EnvelopeIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
+            </View>
             <Controller
               control={control}
               rules={{ 
@@ -109,20 +118,27 @@ const EditProfileModal = ({
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className="flex-1 ml-3 text-slate-900 dark:text-white font-medium text-base h-full"
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 rounded-2xl border ${
+                    errors.email ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
+                  }`}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  placeholder="Enter your email"
+                  placeholder="You@example.com"
                   placeholderTextColor="#64748b"
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  keyboardAppearance={isDarkMode ? 'dark' : 'light'}
                 />
               )}
               name="email"
             />
           </View>
-          {errors.email && <Text className="text-rose-500 dark:text-rose-400 text-xs font-bold mt-1 ml-1">{errors.email.message}</Text>}
+          {errors.email && (
+            <Text className="text-red-500 text-sm mt-1 ml-2">
+              {errors.email.message}
+            </Text>
+          )}
         </View>
 
         <TouchableOpacity 

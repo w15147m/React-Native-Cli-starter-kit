@@ -65,7 +65,7 @@ const Register = ({ navigation }) => {
         {/* Name Field */}
         <View>
           <View className="relative">
-            <View className="absolute left-4 top-4 z-10">
+            <View className="absolute left-4 top-3 z-10">
               <UserIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
@@ -80,7 +80,7 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 pl-12 rounded-2xl border ${
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 rounded-2xl border ${
                     errors.name ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                   }`}
                   placeholder="Full Name"
@@ -103,7 +103,7 @@ const Register = ({ navigation }) => {
         {/* Email Field */}
         <View>
           <View className="relative">
-            <View className="absolute left-4 top-4 z-10">
+            <View className="absolute left-4 top-3 z-10">
               <EnvelopeIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
@@ -118,7 +118,7 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 pl-12 rounded-2xl border ${
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 rounded-2xl border ${
                     errors.email ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                   }`}
                   placeholder="You@example.com"
@@ -143,7 +143,7 @@ const Register = ({ navigation }) => {
         {/* Password Field */}
         <View>
           <View className="relative">
-            <View className="absolute left-4 top-4 z-10">
+            <View className="absolute left-4 top-3 z-10">
               <LockClosedIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
@@ -158,7 +158,7 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 pl-12 pr-12 rounded-2xl border ${
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 pr-12 rounded-2xl border ${
                     errors.password ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                   }`}
                   placeholder="Create a password"
@@ -173,7 +173,7 @@ const Register = ({ navigation }) => {
             />
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-4"
+              className="absolute right-4 top-3"
             >
               {showPassword ? (
                 <EyeSlashIcon size={24} color="#6366f1" />
@@ -192,7 +192,7 @@ const Register = ({ navigation }) => {
         {/* Confirm Password Field */}
         <View>
           <View className="relative">
-            <View className="absolute left-4 top-4 z-10">
+            <View className="absolute left-4 top-3 z-10">
               <LockClosedIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
             </View>
             <Controller
@@ -205,7 +205,7 @@ const Register = ({ navigation }) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 pl-12 pr-12 rounded-2xl border ${
+                  className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 pr-12 rounded-2xl border ${
                     errors.confirmPassword ? 'border-red-500' : 'border-slate-200 dark:border-slate-800'
                   }`}
                   placeholder="Confirm password"
@@ -220,7 +220,7 @@ const Register = ({ navigation }) => {
             />
             <TouchableOpacity
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-4 top-4"
+              className="absolute right-4 top-3"
             >
               {showConfirmPassword ? (
                 <EyeSlashIcon size={24} color="#6366f1" />
