@@ -164,6 +164,8 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
   }
 };
 
+import RNFS from 'react-native-fs';
+
 /**
  * Delete user account
  * @param {number} userId - User ID
@@ -177,12 +179,21 @@ export const deleteUser = async (userId, profileImageUri = null) => {
     // 1. Physically delete profile image if it's not the default one
     if (profileImageUri && !profileImageUri.includes('default_profile.webp')) {
       try {
-        // We attempt to delete using standard filesystem if possible, 
-        // but since we don't have react-native-fs yet, we log it for now.
-        // Once react-native-fs is installed, replace with: await RNFS.unlink(profileImageUri);
-        console.log('Physical image deletion requested for:', profileImageUri);
+        // Handle 'file://' prefix if present
+        const filePath = profileImageUri.startsWith('file://') 
+          ? profileImageUri.replace('file://', '') 
+          : profileImageUri;
+
+        const exists = await RNFS.exists(filePath);
+        if (exists) {
+          await RNFS.unlink(filePath);
+          console.log('Successfully deleted physical image:', filePath);
+        } else {
+          console.log('Image file does not exist at path:', filePath);
+        }
       } catch (err) {
         console.error('Failed to delete physical image:', err);
+        // We don't throw here to ensure the user record is still deleted from DB
       }
     }
 
