@@ -10,6 +10,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { SparklesIcon, DocumentTextIcon, TagIcon } from 'react-native-heroicons/outline';
 import BaseModal from '../../../common/components/BaseModal';
+import IconPicker from './IconPicker';
 
 import { useTheme } from '../../../context/ThemeContext';
 
@@ -60,20 +61,21 @@ const FormInput = ({
 const CreateHabitModal = ({ visible, onClose, onCreate }) => {
   const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState('');
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
       title: '',
       description: '',
-      icon: '',
     }
   });
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await onCreate(data);
+      await onCreate({ ...data, icon: selectedIcon });
       reset();
+      setSelectedIcon('');
       onClose();
     } catch (error) {
       console.log('Create habit failed', error);
@@ -108,12 +110,10 @@ const CreateHabitModal = ({ visible, onClose, onCreate }) => {
         isDarkMode={isDarkMode}
       />
 
-      <FormInput 
-        name="icon" 
-        placeholder="Icon Name (e.g. fire, book)" 
-        icon={TagIcon}
-        control={control}
-        errors={errors}
+
+      <IconPicker 
+        selectedIcon={selectedIcon}
+        onSelectIcon={setSelectedIcon}
         isDarkMode={isDarkMode}
       />
 
