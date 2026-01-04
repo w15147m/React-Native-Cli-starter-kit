@@ -1,49 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
   SafeAreaView, 
   TouchableOpacity, 
   ScrollView, 
-  TextInput 
+  ActivityIndicator
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { 
   Bars3Icon,
-  CheckCircleIcon,
   PlusIcon
 } from 'react-native-heroicons/outline';
-import { CheckCircleIcon as CheckCircleIconSolid } from 'react-native-heroicons/solid';
 import CreateHabitModal from './components/CreateHabitModal';
-
-const dummyHabits = [
-  { id: 1, title: 'Drink Water', description: 'Stay hydrated by drinking at least 6-8 glasses of water daily.' },
-  { id: 2, title: 'Read a Book', description: 'Spend at least 10 minutes reading to feed your mind daily.' },
-  { id: 3, title: 'Walk', description: 'Go for a short walk to boost your mood and energy.' },
-  { id: 4, title: 'Breathe Deeply', description: 'Take a moment to relax and reset with mindful, deep breaths.' },
-  { id: 5, title: 'Focus', description: 'Train your mind to stay present and eliminate distractions.' },
-  { id: 6, title: 'Study or Working', description: 'Build a consistent study or work routine to stay productive and focused.' },
-];
+import { getUserHabits, createHabit } from '../../services/habitServices';
+import { getItem } from '../../utils/storage';
 
 import { useTheme } from '../../context/ThemeContext';
+
+// Icon emoji mapping to get emoji from value
+const ICON_EMOJIS = {
+  water: '💧', books: '📚', running: '🏃', meditation: '🧘', strength: '💪',
+  target: '🎯', time: '⏰', writing: '✍️', art: '🎨', music: '🎵',
+  food: '🍎', sleep: '😴', fire: '🔥', star: '⭐', idea: '💡',
+  growth: '🌱', education: '🎓', coding: '💻', gym: '🏋️', cycling: '🚴',
+  brain: '🧠', heart: '❤️', sparkle: '🌟', fun: '🎪', sun: '🌞',
+  moon: '🌙', coffee: '☕', salad: '🥗', walking: '🚶', movie: '🎬',
+  phone: '📱', gaming: '🎮', home: '🏠', travel: '✈️', photography: '📷',
+  singing: '🎤', pizza: '🍕', swimming: '🏊', soccer: '⚽', tennis: '🎾',
+  puzzle: '🧩', piano: '🎹', guitar: '🎸', earth: '🌍', rainbow: '🌈',
+  bell: '🔔', notes: '📝', calendar: '🗓️', money: '💰', gift: '🎁',
+  flower: '🌺', clover: '🍀', butterfly: '🦋', dog: '🐕', cat: '🐱',
+  wave: '🌊', mountain: '⛰️', beach: '🏖️', cake: '🎂', dessert: '🍰',
+};
 
 const Habits = () => {
   const navigation = useNavigation();
   const { isDarkMode } = useTheme();
-  const [selectedHabitId, setSelectedHabitId] = useState(null);
   const [createModalVisible, setCreateModalVisible] = useState(false);
+  const [habits, setHabits] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
 
-  const handleCreateHabit = async (data) => {
-    console.log('New Habit Data:', data);
-    // TODO: Implement actual database creation
-  };
+  // Load user ID and habits on mount
+  useEffect(() => {
+    loadUserAndHabits();
+  }, []);
 
-  const handleSave = () => {
-    if (selectedHabitId) {
-      console.log('Saved Habit ID:', selectedHabitId);
-      navigation.goBack();
+  const loadUserAndHabits = async () => {
+    try {
+      setLoading(true);
+      const authInfo = await getItem('authInfo');
+      if (authInfo && authInfo.user) {
+        setUserId(authInfo.user.id);
+        const userHabits = await getUserHabits(authInfo.user.id);
+        setHabits(userHabits);
+      }
+    } catch (error) {
+      console.error('Load habits error:', error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handleCreateHabit = async (data) => {
+    try {
+      if (!userId) {
+        console.error('No user ID found');
+        return;
+      }
+
+      const newHabit = await createHabit({
+        user_id: userId,
+        title: data.title,
+        description: data.description,
+        icon: data.icon,
+        habit_type: 'boolean',
+      });
+
+      // Reload habits
+      await loadUserAndHabits();
+      setCreateModalVisible(false);
+    } catch (error) {
+      console.error('Create habit error:', error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 bg-[#F8FAFC] dark:bg-slate-950">
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="#6366f1" />
+          <Text className="text-slate-500 dark:text-slate-400 mt-4">Loading habits...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-[#F8FAFC] dark:bg-slate-950">
@@ -70,27 +122,52 @@ const Habits = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 100 }}
         >
-          <View className="space-y-4 pb-10">
-            {dummyHabits.map((habit) => (
-              <TouchableOpacity
-                key={habit.id}
-                onPress={() => setSelectedHabitId(habit.id)}
-                className={`bg-white dark:bg-slate-900 p-4 rounded-2xl border ${selectedHabitId === habit.id ? (isDarkMode ? 'border-indigo-500 bg-indigo-500/10' : 'border-indigo-600 bg-indigo-50/10') : (isDarkMode ? 'border-slate-800' : 'border-slate-100')} shadow-sm flex-row items-center justify-between`}
-              >
-                <View className="flex-1 pr-4">
-                  <Text className="text-slate-900 dark:text-white font-bold text-base mb-1">{habit.title}</Text>
-                  <Text className="text-slate-500 dark:text-slate-400 text-sm leading-5">{habit.description}</Text>
-                </View>
-                <View>
-                  {selectedHabitId === habit.id ? (
-                    <CheckCircleIconSolid size={28} color={isDarkMode ? "#818cf8" : "#4f46e5"} />
-                  ) : (
-                    <View className="w-7 h-7 rounded-full border-2 border-slate-200 dark:border-slate-700" />
-                  )}
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
+          {habits.length === 0 ? (
+            <View className="items-center justify-center py-20">
+              <Text className="text-slate-400 dark:text-slate-500 text-lg font-medium">
+                No habits yet
+              </Text>
+              <Text className="text-slate-400 dark:text-slate-500 text-sm mt-2">
+                Tap the + button to create your first habit
+              </Text>
+            </View>
+          ) : (
+            <View className="space-y-4 pb-10">
+              {habits.map((habit) => (
+                <TouchableOpacity
+                  key={habit.id}
+                  onPress={() => {
+                    // Sanitize habit object for navigation (Date objects are not serializable)
+                    const serializedHabit = {
+                      ...habit,
+                      created_at: habit.created_at?.toISOString?.() || habit.created_at,
+                      updated_at: habit.updated_at?.toISOString?.() || habit.updated_at,
+                    };
+                    navigation.navigate('HabitDetails', { habit: serializedHabit });
+                  }}
+                  className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex-row items-center"
+                  activeOpacity={0.7}
+                >
+                  {/* Icon */}
+                  <View className="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-500/20 items-center justify-center mr-3">
+                    <Text style={{ fontSize: 24 }}>
+                      {ICON_EMOJIS[habit.icon] || '📌'}
+                    </Text>
+                  </View>
+                  
+                  {/* Content */}
+                  <View className="flex-1">
+                    <Text className="text-slate-900 dark:text-white font-bold text-base mb-1">
+                      {habit.title}
+                    </Text>
+                    <Text className="text-slate-500 dark:text-slate-400 text-sm leading-5">
+                      {habit.description}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
         </ScrollView>
 
         {/* Floating Action Button */}

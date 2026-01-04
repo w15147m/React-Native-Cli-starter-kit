@@ -10,6 +10,8 @@ import AuthNavigator from './components/AuthNavigator';
 
 // Special Screens
 import SplashScreen from '../pages/SplashScreen';
+import HabitDetails from '../pages/Habit/HabitDetails';
+import { HabitSchedules, HabitLogs, HabitStreaks } from '../pages/Habit/HabitAddons';
 
 import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
@@ -40,7 +42,13 @@ const AppNavigator = () => {
     <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {user ? (
-          <Stack.Screen name="App" component={MainDrawerNavigator} />
+          <>
+            <Stack.Screen name="App" component={MainDrawerNavigator} />
+            <Stack.Screen name="HabitDetails" component={HabitDetails} />
+            <Stack.Screen name="HabitSchedules" component={HabitSchedules} />
+            <Stack.Screen name="HabitLogs" component={HabitLogs} />
+            <Stack.Screen name="HabitStreaks" component={HabitStreaks} />
+          </>
         ) : (
           <Stack.Screen name="Auth" component={AuthNavigator} />
         )}

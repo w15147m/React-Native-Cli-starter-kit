@@ -102,7 +102,7 @@ const SplashScreen = ({ onFinish }) => {
         className="items-center"
       >
         <Text className="text-white text-6xl font-black tracking-tighter shadow-2xl">
-          ascend
+          ASCEND
         </Text>
         <View className="h-1.5 w-12 bg-indigo-400/50 rounded-full mt-4" />
         <Text className="text-indigo-200/60 mt-4 font-medium tracking-widest uppercase text-[10px]">
