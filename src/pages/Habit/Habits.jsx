@@ -9,14 +9,20 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { 
-  Bars3Icon,
-  PlusIcon
+  Bars3Icon, 
+  PlusIcon,
+  CheckIcon,
+  PlayIcon
 } from 'react-native-heroicons/outline';
 import CreateHabitModal from './components/CreateHabitModal';
-import { getUserHabits, createHabit } from '../../services/habitServices';
+import AddHabitLogModal from './components/AddHabitLogModal';
+import { getUserHabits, createHabit, createHabitLog } from '../../services/habitServices';
 import { getItem } from '../../utils/storage';
 
 import { useTheme } from '../../context/ThemeContext';
+import { useAlert } from '../../context/AlertContext';
+
+// ... (rest of imports)
 
 // Icon emoji mapping to get emoji from value
 const ICON_EMOJIS = {
@@ -37,7 +43,10 @@ const ICON_EMOJIS = {
 const Habits = () => {
   const navigation = useNavigation();
   const { isDarkMode } = useTheme();
+  const { showToast } = useAlert();
   const [createModalVisible, setCreateModalVisible] = useState(false);
+  const [logModalVisible, setLogModalVisible] = useState(false);
+  const [selectedHabitForLog, setSelectedHabitForLog] = useState(null);
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
@@ -85,6 +94,41 @@ const Habits = () => {
     } catch (error) {
       console.error('Create habit error:', error);
     }
+  };
+
+  const handleQuickLog = async (habit) => {
+    if (habit.habit_type === 'boolean') {
+      try {
+        await createHabitLog({
+          habit_id: habit.id,
+          log_date: new Date(),
+          is_completed: true,
+          value: 1 // Default value for boolean
+        });
+        showToast('Habit completed!', 'success');
+      } catch (error) {
+        console.error('Quick log error:', error);
+        showToast('Failed to log habit', 'error');
+      }
+    } else {
+      setSelectedHabitForLog(habit);
+      setLogModalVisible(true);
+    }
+  };
+
+  const handleLogSubmit = async (habit, value) => {
+      try {
+        await createHabitLog({
+          habit_id: habit.id,
+          log_date: new Date(),
+          is_completed: true, // Assuming logging value implies completion for that instance
+          value: value
+        });
+        showToast('Progress logged!', 'success');
+      } catch (error) {
+        console.error('Log error:', error);
+        showToast('Failed to log progress', 'error');
+      }
   };
 
   if (loading) {
@@ -157,14 +201,33 @@ const Habits = () => {
                   </View>
                   
                   {/* Content */}
-                  <View className="flex-1">
-                    <Text className="text-slate-900 dark:text-white font-bold text-base mb-1">
+                  <View className="flex-1 mr-2">
+                    <Text className="text-slate-900 dark:text-white font-bold text-base mb-1" numberOfLines={1}>
                       {habit.title}
                     </Text>
-                    <Text className="text-slate-500 dark:text-slate-400 text-sm leading-5">
+                    <Text className="text-slate-500 dark:text-slate-400 text-sm leading-5" numberOfLines={2}>
                       {habit.description}
                     </Text>
                   </View>
+
+                  {/* Quick Log Button */}
+                  <TouchableOpacity
+                    onPress={(e) => {
+                      e.stopPropagation();
+                      handleQuickLog(habit);
+                    }}
+                    className={`p-3 rounded-xl ${
+                      habit.habit_type === 'boolean' 
+                        ? 'bg-green-100 dark:bg-green-500/20' 
+                        : 'bg-blue-100 dark:bg-blue-500/20'
+                    }`}
+                  >
+                    {habit.habit_type === 'boolean' ? (
+                      <CheckIcon size={20} color={isDarkMode ? '#4ade80' : '#16a34a'} />
+                    ) : (
+                      <PlusIcon size={20} color={isDarkMode ? '#60a5fa' : '#2563eb'} />
+                    )}
+                  </TouchableOpacity>
                 </TouchableOpacity>
               ))}
             </View>
@@ -184,6 +247,13 @@ const Habits = () => {
           visible={createModalVisible}
           onClose={() => setCreateModalVisible(false)}
           onCreate={handleCreateHabit}
+        />
+
+        <AddHabitLogModal
+          visible={logModalVisible}
+          onClose={() => setLogModalVisible(false)}
+          habit={selectedHabitForLog}
+          onLog={handleLogSubmit}
         />
       </View>
     </SafeAreaView>

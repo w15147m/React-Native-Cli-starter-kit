@@ -109,52 +109,51 @@ const HabitDetails = () => {
 
         {/* Habit Card */}
         <View className="mx-6 bg-white dark:bg-slate-900 rounded-[28px] p-6 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-50 dark:border-slate-800 mb-6">
-          <View className="items-center mb-6">
-            <View className="w-20 h-20 rounded-2xl bg-indigo-100 dark:bg-indigo-500/20 items-center justify-center mb-4">
+          <View className="flex-row items-center mb-6">
+            <View className="w-20 h-20 rounded-2xl bg-indigo-100 dark:bg-indigo-500/20 items-center justify-center mr-4">
               <Text style={{ fontSize: 40 }}>
                 {ICON_EMOJIS[currentHabit.icon] || '📌'}
               </Text>
             </View>
-            <Text className="text-xl font-bold text-slate-900 dark:text-white mb-2 text-center">
-              {currentHabit.title}
-            </Text>
-            <Text className="text-slate-500 dark:text-slate-400 text-center leading-5 mb-4">
-              {currentHabit.description}
-            </Text>
+            <View className="flex-1">
+              <Text className="text-xl font-bold text-slate-900 dark:text-white mb-1">
+                {currentHabit.title}
+              </Text>
+              <Text className="text-slate-500 dark:text-slate-400 leading-5">
+                {currentHabit.description}
+              </Text>
+            </View>
           </View>
 
-          {/* Stats Row */}
-          <View className="flex-row justify-between space-x-3 mt-2">
-            {/* Type Card */}
-            <View className="flex-1 bg-slate-50 dark:bg-black/20 p-3 rounded-2xl items-center border border-slate-100 dark:border-white/5">
-              <View className="bg-indigo-100 dark:bg-indigo-500/20 p-2 rounded-full mb-2">
-                <ChartBarIcon size={16} color={isDarkMode ? '#a5b4fc' : '#6366f1'} />
+          {/* Stats Bar */}
+          <View className="flex-row mt-6 bg-slate-50 dark:bg-black/20 rounded-2xl p-4 border border-slate-100 dark:border-white/5">
+            {/* Target Section */}
+            <View className="flex-1 items-center justify-center border-r border-slate-200 dark:border-white/10">
+              <View className="flex-row items-center mb-1">
+                <FireIcon size={14} color={isDarkMode ? '#94a3b8' : '#64748b'} style={{ marginRight: 6 }} />
+                <Text className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+                  Target
+                </Text>
               </View>
-              <Text className="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Type</Text>
-              <Text className="text-slate-900 dark:text-white font-bold capitalize text-sm">
-                {currentHabit.habit_type || 'Boolean'}
+              <Text className="text-slate-900 dark:text-white font-bold text-lg">
+                {currentHabit.habit_type === 'time' && currentHabit.target_value 
+                  ? `${currentHabit.target_value}m` 
+                  : currentHabit.habit_type === 'count' && currentHabit.target_value 
+                    ? `${currentHabit.target_value}x` 
+                    : 'Daily'}
               </Text>
             </View>
 
-            {/* Target Card */}
-            <View className="flex-1 bg-slate-50 dark:bg-black/20 p-3 rounded-2xl items-center border border-slate-100 dark:border-white/5">
-              <View className="bg-emerald-100 dark:bg-emerald-500/20 p-2 rounded-full mb-2">
-                <FireIcon size={16} color={isDarkMode ? '#6ee7b7' : '#10b981'} />
+            {/* Status Section */}
+            <View className="flex-1 items-center justify-center">
+              <View className="flex-row items-center mb-1">
+                <CalendarIcon size={14} color={isDarkMode ? '#94a3b8' : '#64748b'} style={{ marginRight: 6 }} />
+                <Text className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+                  Status
+                </Text>
               </View>
-              <Text className="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Target</Text>
-              <Text className="text-slate-900 dark:text-white font-bold text-sm">
-                {currentHabit.target_value ? currentHabit.target_value : 'N/A'}
-              </Text>
-            </View>
-
-            {/* Status Card */}
-            <View className="flex-1 bg-slate-50 dark:bg-black/20 p-3 rounded-2xl items-center border border-slate-100 dark:border-white/5">
-              <View className={`p-2 rounded-full mb-2 ${currentHabit.is_active ? 'bg-green-100 dark:bg-green-500/20' : 'bg-rose-100 dark:bg-rose-500/20'}`}>
-                <CalendarIcon size={16} color={currentHabit.is_active ? (isDarkMode ? '#86efac' : '#22c55e') : (isDarkMode ? '#fda4af' : '#f43f5e')} />
-              </View>
-              <Text className="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Status</Text>
-              <Text className={`font-bold text-sm ${currentHabit.is_active ? 'text-green-600 dark:text-green-400' : 'text-rose-600 dark:text-rose-400'}`}>
-                {currentHabit.is_active ? 'Active' : 'Inactive'}
+              <Text className={`font-bold text-lg ${currentHabit.is_active ? 'text-green-500' : 'text-rose-500'}`}>
+                {currentHabit.is_active ? 'Active' : 'Stopped'}
               </Text>
             </View>
           </View>
