@@ -14,6 +14,8 @@ import {
   CalendarIcon,
   ChartBarIcon,
   FireIcon,
+  InformationCircleIcon,
+  ClipboardDocumentListIcon
 } from 'react-native-heroicons/outline';
 import { useTheme } from '../../context/ThemeContext';
 import { useAlert } from '../../context/AlertContext';
@@ -101,28 +103,17 @@ const HabitDetails = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F8FAFC] dark:bg-slate-950">
+    <View className="flex-1 bg-[#F8FAFC] dark:bg-slate-950">
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 40 }}
+        bounces={false}
       >
-        {/* Header */}
-        <View className="flex-row items-center px-6 pt-4 mb-6">
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            className="p-2 rounded-xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 mr-3"
-          >
-            <ChevronLeftIcon size={22} color={isDarkMode ? '#f8fafc' : '#1e293b'} />
-          </TouchableOpacity>
-          <Text className="text-2xl font-black text-slate-900 dark:text-white flex-1">
-            Habit Details
-          </Text>
-        </View>
-
-        {/* Habit Card */}
-        <View className="mx-6 bg-white dark:bg-slate-900 rounded-[28px] p-5 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-50 dark:border-slate-800 mb-4">
-          {/* Header & Target */}
+        {/* Super Header Card (No Back Button) */}
+        <View className="bg-white dark:bg-slate-900 rounded-b-[40px] pt-12 pb-8 px-6 shadow-lg shadow-slate-200/50 dark:shadow-none z-10">
+          
+          {/* Main Content Row */}
           <View className="flex-row items-center mb-6">
             <View className="w-16 h-16 rounded-2xl bg-indigo-100 dark:bg-indigo-500/20 items-center justify-center mr-4">
               <Text style={{ fontSize: 32 }}>
@@ -130,69 +121,100 @@ const HabitDetails = () => {
               </Text>
             </View>
             <View className="flex-1">
-              <Text className="text-xl font-bold text-slate-900 dark:text-white mb-1">
+              <Text className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
                 {currentHabit.title}
               </Text>
               
-              {/* Target Row (No BG, Icon Added) */}
-              <View className="flex-row items-center mb-1">
-                <FireIcon size={14} color={isDarkMode ? '#94a3b8' : '#64748b'} style={{ marginRight: 4 }} />
-                <Text className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
-                  {currentHabit.habit_type === 'time' && currentHabit.target_value 
-                    ? `${currentHabit.target_value}m` 
-                    : currentHabit.habit_type === 'count' && currentHabit.target_value 
-                      ? `${currentHabit.target_value}x` 
-                      : 'Daily'}
-                </Text>
+              <View className="flex-row items-center space-x-3">
+                 {/* Target Badge */}
+                 <View className="flex-row items-center bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
+                    <FireIcon size={12} color={isDarkMode ? '#94a3b8' : '#64748b'} style={{ marginRight: 4 }} />
+                    <Text className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase">
+                      {currentHabit.habit_type === 'time' && currentHabit.target_value 
+                        ? `${currentHabit.target_value}m` 
+                        : currentHabit.habit_type === 'count' && currentHabit.target_value 
+                          ? `${currentHabit.target_value}x` 
+                          : 'Daily'}
+                    </Text>
+                 </View>
+                 
+                 {/* Status Badge */}
+                 <View className={`px-2 py-1 rounded-md ${currentHabit.is_active ? 'bg-green-100 dark:bg-green-500/20' : 'bg-rose-100 dark:bg-rose-500/20'}`}>
+                    <Text className={`text-xs font-bold ${currentHabit.is_active ? 'text-green-700 dark:text-green-400' : 'text-rose-700 dark:text-rose-400'}`}>
+                        {currentHabit.is_active ? 'Active' : 'Paused'}
+                    </Text>
+                 </View>
               </View>
-
-              <Text className="text-slate-400 dark:text-slate-500 leading-4 text-xs">
-                {currentHabit.description}
-              </Text>
             </View>
           </View>
 
-          {/* Control Bar: Status + Actions */}
-          <View className="flex-row items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
-            {/* Status Toggle */}
-            <TouchableOpacity 
-              onPress={handleToggleStatus}
-              className={`flex-row items-center px-4 py-2 rounded-xl border ${
-                currentHabit.is_active 
-                  ? 'bg-green-50 border-green-200 dark:bg-green-500/10 dark:border-green-500/20' 
-                  : 'bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700'
-              }`}
-            >
-              <View className={`w-2 h-2 rounded-full mr-2 ${currentHabit.is_active ? 'bg-green-500' : 'bg-slate-400'}`} />
-              <Text className={`font-bold text-xs ${currentHabit.is_active ? 'text-green-700 dark:text-green-400' : 'text-slate-600 dark:text-slate-400'}`}>
-                {currentHabit.is_active ? 'Active' : 'Paused'}
-              </Text>
-            </TouchableOpacity>
+          {/* Integrated Control Bar */}
+          <View className="flex-row items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800">
+             {/* Status Switcher */}
+             <TouchableOpacity 
+                onPress={handleToggleStatus}
+                className="flex-row items-center"
+             >
+                <View className={`w-12 h-7 rounded-full mr-3 items-start justify-center px-1 ${currentHabit.is_active ? 'bg-indigo-500' : 'bg-slate-200 dark:bg-slate-700'}`}>
+                    <View className={`w-5 h-5 bg-white rounded-full shadow-sm ${currentHabit.is_active ? 'self-end' : 'self-start'}`} />
+                </View>
+                <Text className="text-sm font-bold text-slate-600 dark:text-slate-300">
+                    {currentHabit.is_active ? 'Running' : 'Stopped'}
+                </Text>
+             </TouchableOpacity>
 
-            {/* Actions */}
-            <View className="flex-row space-x-2">
-              <TouchableOpacity
-                onPress={() => setEditModalVisible(true)}
-                className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"
-              >
-                <PencilSquareIcon size={18} color={isDarkMode ? '#94a3b8' : '#64748b'} />
-              </TouchableOpacity>
+             {/* Action Icons */}
+             <View className="flex-row space-x-1">
+                <TouchableOpacity
+                  onPress={() => setEditModalVisible(true)}
+                  className="p-2 rounded-full active:bg-slate-100 dark:active:bg-slate-800"
+                >
+                  <PencilSquareIcon size={22} color={isDarkMode ? '#94a3b8' : '#64748b'} />
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => navigation.navigate('HabitSchedules', { habit: currentHabit })}
-                className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"
-              >
-                <CalendarIcon size={18} color={isDarkMode ? '#94a3b8' : '#64748b'} />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('HabitSchedules', { habit: currentHabit })}
+                  className="p-2 rounded-full active:bg-slate-100 dark:active:bg-slate-800"
+                >
+                  <CalendarIcon size={22} color={isDarkMode ? '#94a3b8' : '#64748b'} />
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={handleDeletePress}
-                className="p-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20"
-              >
-                <TrashIcon size={18} color="#f43f5e" />
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  onPress={handleDeletePress}
+                  className="p-2 rounded-full active:bg-rose-50 dark:active:bg-rose-900/20"
+                >
+                  <TrashIcon size={22} color="#f43f5e" />
+                </TouchableOpacity>
+             </View>
           </View>
+        </View>
+
+        {/* Habit Overview Card */}
+        <View className="mx-6 mt-2 bg-white dark:bg-slate-900 rounded-[28px] p-5 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-50 dark:border-slate-800">
+            <View className="flex-row items-center mb-4">
+                <Text className="text-lg font-bold text-slate-900 dark:text-white mr-2">
+                    Habit Overview
+                </Text>
+                <InformationCircleIcon size={20} color={isDarkMode ? '#94a3b8' : '#64748b'} />
+            </View>
+
+            <View className="flex-row bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('HabitLogs', { habit: currentHabit })}
+                    className="flex-1 py-3 rounded-lg bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 mr-1 flex-row items-center justify-center space-x-2"
+                >
+                    <ClipboardDocumentListIcon size={18} color={isDarkMode ? '#fdba74' : '#f97316'} />
+                    <Text className="font-bold text-slate-900 dark:text-white text-sm">Logs</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('HabitStreaks', { habit: currentHabit })}
+                    className="flex-1 py-3 rounded-lg bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 ml-1 flex-row items-center justify-center space-x-2"
+                >
+                    <ChartBarIcon size={18} color={isDarkMode ? '#d8b4fe' : '#a855f7'} />
+                    <Text className="font-bold text-slate-900 dark:text-white text-sm">Streaks</Text>
+                </TouchableOpacity>
+            </View>
         </View>
       </ScrollView>
 
@@ -208,7 +230,7 @@ const HabitDetails = () => {
         onClose={() => setDeleteModalVisible(false)}
         onDeleteHabit={handleDeleteHabit}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
