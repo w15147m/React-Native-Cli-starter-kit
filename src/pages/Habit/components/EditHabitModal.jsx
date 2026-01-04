@@ -61,6 +61,8 @@ const EditHabitModal = ({ visible, onClose, habit, onUpdateHabit }) => {
   const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(habit?.icon || '');
+  const [habitType, setHabitType] = useState(habit?.habit_type || 'boolean');
+  const [targetValue, setTargetValue] = useState(habit?.target_value?.toString() || '');
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
@@ -76,13 +78,20 @@ const EditHabitModal = ({ visible, onClose, habit, onUpdateHabit }) => {
         description: habit.description,
       });
       setSelectedIcon(habit.icon);
+      setHabitType(habit.habit_type || 'boolean');
+      setTargetValue(habit.target_value?.toString() || '');
     }
   }, [habit, reset]);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await onUpdateHabit({ ...data, icon: selectedIcon });
+      await onUpdateHabit({ 
+        ...data, 
+        icon: selectedIcon,
+        habit_type: habitType,
+        target_value: (habitType === 'count' || habitType === 'time') ? parseInt(targetValue) : null
+      });
       reset();
       setSelectedIcon('');
       onClose();
@@ -114,6 +123,72 @@ const EditHabitModal = ({ visible, onClose, habit, onUpdateHabit }) => {
         multiline={true}
         isDarkMode={isDarkMode}
       />
+
+      {/* Habit Type Selector */}
+      <View className="mb-4">
+        <Text className="text-slate-900 dark:text-white font-bold mb-2 ml-1">Habit Type</Text>
+        <View className="flex-row space-x-2">
+          {[
+            { id: 'boolean', label: 'Yes/No' },
+            { id: 'count', label: 'Numeric' },
+            { id: 'time', label: 'Timer' }
+          ].map((type) => (
+            <TouchableOpacity
+              key={type.id}
+              onPress={() => setHabitType(type.id)}
+              className={`flex-1 p-3 rounded-xl border ${
+                habitType === type.id 
+                  ? 'bg-indigo-600 border-indigo-600' 
+                  : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
+              }`}
+            >
+              <Text className={`text-center font-bold ${
+                habitType === type.id ? 'text-white' : 'text-slate-900 dark:text-white'
+              }`}>
+                {type.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      {/* Target Value Input (Conditional) */}
+      {(habitType === 'count' || habitType === 'time') && (
+        <View className="mb-4">
+          <Text className="text-slate-900 dark:text-white font-bold mb-2 ml-1">
+            {habitType === 'count' ? 'Target Value (e.g. 10 reps)' : 'Target Minutes (e.g. 30)'}
+          </Text>
+          <View className="relative">
+             <View className="absolute left-4 top-3 z-10">
+               {/* No View wrapper needed for simple icon if not already wrapped elsewhere, 
+                   but FormInput used it. Here we reuse the structure or import TagIcon if available */}
+               {/* Note: TagIcon was not imported in EditHabitModal originally. 
+                   I need to make sure it is imported or use another icon.
+                   Checking import... It was only SparklesIcon and DocumentTextIcon.
+                   I will add TagIcon import in a separate call or just use a generic icon view for now if import is tricky
+                   Actually I can't change import in this block easily since it is at top.
+                   I'll assume I can add it or just use SparklesIcon as placeholder or no icon.
+                   Better: I'll use DocumentTextIcon again or just text.
+                   Wait, I should check libraries. 
+                   I will use the same structure but without the icon if I didn't import it.
+                   Actually, let's fix imports first or assume user has it.
+                   The prompt said "modify EditHabitModal".
+                   I'll use DocumentTextIcon for now to be safe, or just no icon.
+                   Let's check imports again.
+               */}
+               <DocumentTextIcon size={24} color={isDarkMode ? "#94a3b8" : "#64748b"} />
+             </View>
+             <TextInput
+              onChangeText={setTargetValue}
+              value={targetValue}
+              placeholder={habitType === 'count' ? "Target Value" : "Target Minutes"}
+              placeholderTextColor="#64748b"
+              keyboardType="numeric"
+              className={`bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-3 pl-12 rounded-2xl border border-slate-200 dark:border-slate-800`}
+            />
+          </View>
+        </View>
+      )}
 
       <IconPicker
         selectedIcon={selectedIcon}
