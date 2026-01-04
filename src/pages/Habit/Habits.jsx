@@ -75,7 +75,8 @@ const Habits = () => {
         title: data.title,
         description: data.description,
         icon: data.icon,
-        habit_type: 'boolean',
+        habit_type: data.habit_type,
+        target_value: data.target_value,
       });
 
       // Reload habits

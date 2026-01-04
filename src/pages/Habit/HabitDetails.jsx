@@ -54,6 +54,8 @@ const HabitDetails = () => {
         title: data.title,
         description: data.description,
         icon: data.icon,
+        habit_type: data.habit_type,
+        target_value: data.target_value,
       });
       
       // Serialize for state and future navigation
@@ -137,6 +139,18 @@ const HabitDetails = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            onPress={() => navigation.navigate('HabitSchedules', { habit: currentHabit })}
+            className="flex-1 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-50 dark:border-slate-800 shadow-sm items-center justify-center space-y-2"
+          >
+            <View className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-full items-center justify-center">
+              <CalendarIcon size={20} color={isDarkMode ? '#93c5fd' : '#3b82f6'} />
+            </View>
+            <Text className="text-slate-900 dark:text-slate-200 font-bold text-xs text-center">
+              Schedules
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             onPress={handleDeletePress}
             className="flex-1 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-50 dark:border-slate-800 shadow-sm items-center justify-center space-y-2"
           >
@@ -149,68 +163,49 @@ const HabitDetails = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Navigation Section */}
-        <View className="px-6">
+        {/* Full Data Section */}
+        <View className="px-6 pb-6">
           <Text className="text-lg font-bold text-slate-900 dark:text-white mb-4">
-            Manage Habit
+            Habit Information
           </Text>
-
-          <TouchableOpacity 
-            onPress={() => navigation.navigate('HabitSchedules', { habit: currentHabit })}
-            className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-50 dark:border-slate-800 shadow-sm flex-row items-center justify-between mb-3"
-          >
-            <View className="flex-row items-center flex-1">
-              <View className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-full items-center justify-center mr-3">
-                <CalendarIcon size={20} color={isDarkMode ? '#93c5fd' : '#3b82f6'} />
-              </View>
-              <View className="flex-1">
-                <Text className="text-slate-900 dark:text-white font-bold text-base">
-                  Schedules
-                </Text>
-                <Text className="text-slate-500 dark:text-slate-400 text-xs">
-                  Set when to track this habit
-                </Text>
-              </View>
+          <View className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-50 dark:border-slate-800 space-y-3">
+            <View className="flex-row justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <Text className="text-slate-500 dark:text-slate-400">ID</Text>
+              <Text className="text-slate-900 dark:text-white font-medium">{currentHabit.id}</Text>
             </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            onPress={() => navigation.navigate('HabitLogs', { habit: currentHabit })}
-            className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-50 dark:border-slate-800 shadow-sm flex-row items-center justify-between mb-3"
-          >
-            <View className="flex-row items-center flex-1">
-              <View className="w-10 h-10 bg-green-50 dark:bg-green-900/20 rounded-full items-center justify-center mr-3">
-                <ChartBarIcon size={20} color={isDarkMode ? '#86efac' : '#22c55e'} />
-              </View>
-              <View className="flex-1">
-                <Text className="text-slate-900 dark:text-white font-bold text-base">
-                  Logs
-                </Text>
-                <Text className="text-slate-500 dark:text-slate-400 text-xs">
-                  View your habit completion history
-                </Text>
-              </View>
+            <View className="flex-row justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <Text className="text-slate-500 dark:text-slate-400">User ID</Text>
+              <Text className="text-slate-900 dark:text-white font-medium">{currentHabit.user_id}</Text>
             </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            onPress={() => navigation.navigate('HabitStreaks', { habit: currentHabit })}
-            className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-50 dark:border-slate-800 shadow-sm flex-row items-center justify-between"
-          >
-            <View className="flex-row items-center flex-1">
-              <View className="w-10 h-10 bg-orange-50 dark:bg-orange-900/20 rounded-full items-center justify-center mr-3">
-                <FireIcon size={20} color={isDarkMode ? '#fdba74' : '#f97316'} />
-              </View>
-              <View className="flex-1">
-                <Text className="text-slate-900 dark:text-white font-bold text-base">
-                  Streaks
-                </Text>
-                <Text className="text-slate-500 dark:text-slate-400 text-xs">
-                  Track your consistency streaks
-                </Text>
-              </View>
+            <View className="flex-row justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <Text className="text-slate-500 dark:text-slate-400">Type</Text>
+              <Text className="text-slate-900 dark:text-white font-medium capitalize">{currentHabit.habit_type || 'boolean'}</Text>
             </View>
-          </TouchableOpacity>
+            <View className="flex-row justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <Text className="text-slate-500 dark:text-slate-400">Target Value</Text>
+              <Text className="text-slate-900 dark:text-white font-medium">
+                {currentHabit.target_value ? currentHabit.target_value : 'N/A'}
+              </Text>
+            </View>
+            <View className="flex-row justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <Text className="text-slate-500 dark:text-slate-400">Is Active</Text>
+              <Text className={`font-bold ${currentHabit.is_active ? 'text-green-500' : 'text-red-500'}`}>
+                {currentHabit.is_active ? 'Yes' : 'No'}
+              </Text>
+            </View>
+            <View className="flex-row justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <Text className="text-slate-500 dark:text-slate-400">Created At</Text>
+              <Text className="text-slate-900 dark:text-white font-medium text-xs">
+                {new Date(currentHabit.created_at).toLocaleString()}
+              </Text>
+            </View>
+            <View className="flex-row justify-between">
+              <Text className="text-slate-500 dark:text-slate-400">Updated At</Text>
+              <Text className="text-slate-900 dark:text-white font-medium text-xs">
+                {new Date(currentHabit.updated_at || currentHabit.created_at).toLocaleString()}
+              </Text>
+            </View>
+          </View>
         </View>
       </ScrollView>
 
