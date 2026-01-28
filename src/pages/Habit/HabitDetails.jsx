@@ -49,6 +49,7 @@ const HabitDetails = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [currentHabit, setCurrentHabit] = useState(habit);
+  const [selectedTimeRange, setSelectedTimeRange] = useState('Week');
 
   const handleUpdateHabit = async (data) => {
     try {
@@ -189,7 +190,7 @@ const HabitDetails = () => {
         </View>
 
         {/* Habit Overview Card */}
-        <View className="mx-4 mt-2 bg-white dark:bg-slate-900 rounded-[28px] p-5 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-50 dark:border-slate-800">
+        <View className="mx-4 mt-2 bg-white dark:bg-slate-900 rounded-[16px] p-5 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-50 dark:border-slate-800">
             <View className="flex-row items-center mb-4">
                 <Text className="text-lg font-bold text-slate-900 dark:text-white mr-2">
                     Habit Overview
@@ -197,22 +198,27 @@ const HabitDetails = () => {
                 <InformationCircleIcon size={20} color={isDarkMode ? '#94a3b8' : '#64748b'} />
             </View>
 
+            {/* Time Range Tabs */}
             <View className="flex-row bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('HabitLogs', { habit: currentHabit })}
-                    className="flex-1 py-3 rounded-lg bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 mr-1 flex-row items-center justify-center space-x-2"
-                >
-                    <ClipboardDocumentListIcon size={18} color={isDarkMode ? '#fdba74' : '#f97316'} />
-                    <Text className="font-bold text-slate-900 dark:text-white text-sm">Logs</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('HabitStreaks', { habit: currentHabit })}
-                    className="flex-1 py-3 rounded-lg bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 ml-1 flex-row items-center justify-center space-x-2"
-                >
-                    <ChartBarIcon size={18} color={isDarkMode ? '#d8b4fe' : '#a855f7'} />
-                    <Text className="font-bold text-slate-900 dark:text-white text-sm">Streaks</Text>
-                </TouchableOpacity>
+                {['Day', 'Week', 'Month', 'Year'].map((range) => (
+                    <TouchableOpacity
+                        key={range}
+                        onPress={() => setSelectedTimeRange(range)}
+                        className={`flex-1 py-2 rounded-lg items-center justify-center ${
+                            selectedTimeRange === range 
+                                ? 'bg-white dark:bg-slate-700 shadow-sm' 
+                                : 'bg-transparent'
+                        }`}
+                    >
+                        <Text className={`font-bold text-sm ${
+                            selectedTimeRange === range
+                                ? 'text-slate-900 dark:text-white'
+                                : 'text-slate-400 dark:text-slate-500'
+                        }`}>
+                            {range}
+                        </Text>
+                    </TouchableOpacity>
+                ))}
             </View>
         </View>
       </ScrollView>
