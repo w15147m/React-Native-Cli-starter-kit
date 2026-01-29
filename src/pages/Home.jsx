@@ -36,7 +36,7 @@ const Home = () => {
             <Text className="text-slate-400 dark:text-slate-400 font-bold text-xs uppercase tracking-widest mb-1">
               Welcome Back
             </Text>
-            <Text className="text-2xl font-black text-slate-900 dark:text-white">Dashboard</Text>
+            <Text className="text-2xl font-black text-slate-900 dark:text-white">Starter Kit</Text>
           </View>
           <TouchableOpacity 
             className="p-2 rounded-xl bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800"
@@ -50,7 +50,7 @@ const Home = () => {
         <View className="mx-6 bg-indigo-600 dark:bg-indigo-500 rounded-[32px] p-6 mb-8 overflow-hidden relative shadow-lg shadow-indigo-200 dark:shadow-none">
           <View className="z-10">
             <Text className="text-indigo-100 font-bold mb-2">Welcome</Text>
-            <Text className="text-3xl font-black text-white mb-4">Start your day! 🚀</Text>
+            <Text className="text-3xl font-black text-white mb-4">Welcome to Starter Kit! 🚀</Text>
           </View>
           
           {/* Abstract circles */}
@@ -64,7 +64,7 @@ const Home = () => {
             <View className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-full items-center justify-center mb-4">
               <SparklesIcon size={32} color={isDarkMode ? "#a5b4fc" : "#6366f1"} />
             </View>
-            <Text className="text-slate-900 dark:text-white font-bold text-lg mb-2">Welcome to your Dashboard</Text>
+            <Text className="text-slate-900 dark:text-white font-bold text-lg mb-2">Welcome to Starter Kit</Text>
             <Text className="text-slate-400 dark:text-slate-500 text-center px-10 leading-5">
               Everything looks good! Enjoy your day.
             </Text>
