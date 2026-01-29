@@ -3,19 +3,16 @@ import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { 
   HomeIcon, 
-  ChartBarIcon, 
   UserIcon
 } from 'react-native-heroicons/outline';
 import { 
   HomeIcon as HomeIconSolid,
-  ChartBarIcon as ChartBarIconSolid,
   UserIcon as UserIconSolid
 } from 'react-native-heroicons/solid';
 
 // Custom Components & Pages
 import CustomTabBar from './CustomTabBar';
 import Home from '../../pages/Home';
-import Statistics from '../../pages/Statistics';
 import Profile from '../../pages/Profile/Profile';
 
 const Tab = createBottomTabNavigator();
@@ -37,15 +34,7 @@ const TabNavigator = () => {
           tabBarIconActive: (props) => <HomeIconSolid {...props} />
         }} 
       />
-      <Tab.Screen 
-        name="Statistics" 
-        component={Statistics} 
-        options={{ 
-          title: 'Statistics',
-          tabBarIcon: (props) => <ChartBarIcon {...props} />,
-          tabBarIconActive: (props) => <ChartBarIconSolid {...props} />
-        }} 
-      />
+
       <Tab.Screen 
         name="ProfileTab" 
         component={Profile} 
