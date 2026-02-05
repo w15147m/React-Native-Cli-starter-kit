@@ -1,8 +1,8 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import TabNavigator from './TabNavigator';
-import ProfileDrawer from './ProfileDrawer';
-import EditProfile from '../../pages/Profile/components/EditProfile';
+import TabNavigator from './TabNavigator.jsx';
+import ProfileDrawer from './ProfileDrawer.jsx';
+import EditProfile from '../../pages/Profile/components/EditProfile.jsx';
 
 const Drawer = createDrawerNavigator();
 

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { StatusBar, View } from 'react-native';
-import { AuthProvider } from './src/context/AuthContext';
-import { AlertProvider } from './src/context/AlertContext';
-import AlertModal from './src/components/AlertModal';
-import Toast from './src/components/Toast';
-import AppNavigator from './src/navigation/AppNavigator';
+import { AuthProvider } from './src/context/AuthContext.jsx';
+import { AlertProvider } from './src/context/AlertContext.jsx';
+import AlertModal from './src/components/AlertModal.jsx';
+import Toast from './src/components/Toast.jsx';
+import AppNavigator from './src/navigation/AppNavigator.jsx';
 import SplashScreen from 'react-native-splash-screen';
 import { runMigrations } from './src/db/client';
 

@@ -5,11 +5,11 @@ import { AuthContext } from '../context/AuthContext';
 import { ActivityIndicator, View } from 'react-native';
 
 // Navigators
-import MainDrawerNavigator from './components/MainDrawerNavigator';
-import AuthNavigator from './components/AuthNavigator';
+import MainDrawerNavigator from './components/MainDrawerNavigator.jsx';
+import AuthNavigator from './components/AuthNavigator.jsx';
 
 // Special Screens
-import SplashScreen from '../pages/SplashScreen';
+import SplashScreen from '../pages/SplashScreen.jsx';
 
 import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
